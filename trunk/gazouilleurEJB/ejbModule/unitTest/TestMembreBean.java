@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.naming.*;
 
-import org.hibernate.validator.AssertTrue;
-
 import junit.framework.TestCase;
 import ejb.*;
 import entity.*;
@@ -92,14 +90,14 @@ public class TestMembreBean extends TestCase {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre membre = facade.getByPseudo("Toto");
 		facade.getSuivi(membre);
-		assertNotNull(membre.getListSuivis()); // TODO améliorer le test
+		assertNotNull(membre.getListSuivis());
 	}
 
 	public void testGetSuiveur() throws MembreException, NamingException {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre membre = facade.getByPseudo("Toto");
 		facade.getSuiveur(membre);
-		assertNotNull(membre.getListSuiveurs()); // TODO améliorer le test
+		assertNotNull(membre.getListSuiveurs());
 	}
 
 	public void testAjouterAmi() throws MembreException, NamingException {
@@ -127,7 +125,7 @@ public class TestMembreBean extends TestCase {
 		Membre membre2 = facade.getByPseudo("Toto");
 		membre2.setListSuivis((List<Membre>) facade.getSuivi(membre2));
 		
-		assertNotSame(ami, membre2.getListSuivis().get(0));
+		assertEquals(0, membre2.getListSuivis().size());
 	}
 
 	public void testRechercheByPseudo() throws MembreException, NamingException {

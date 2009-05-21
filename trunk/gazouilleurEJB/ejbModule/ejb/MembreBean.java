@@ -4,7 +4,6 @@ package ejb;
 import java.util.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -139,7 +138,9 @@ public class MembreBean implements MembreFacade {
 			ami = getEntityMgr().merge(ami);
 			
 			membre.ajouterSuivi(ami);
-			ami.ajouterSuivi(membre);
+			
+			membre = getEntityMgr().merge(membre);
+			ami = getEntityMgr().merge(ami);
 		}
 	}
 
@@ -148,9 +149,13 @@ public class MembreBean implements MembreFacade {
 	 */
 	public void supprimerAmi (Membre membre, Membre ami) {
 		if (membre != null && ami != null) {
-			Membre membre1 = getEntityMgr().merge(membre);
-			Membre suivi = getEntityMgr().merge(ami);
-			membre1.supprimerSuivi(suivi);
+			membre = getEntityMgr().merge(membre);
+			ami = getEntityMgr().merge(ami);
+			
+			membre.supprimerSuivi(ami);
+			
+			membre = getEntityMgr().merge(membre);
+			ami = getEntityMgr().merge(ami);
 		}	
 	}
 
@@ -160,6 +165,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuivi(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
+		collection.size(); // chargement de la collection persistée
 		return collection;
 	}
 	/**
@@ -168,6 +174,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuiveur(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
+		collection.size(); // chargement de la collection persistée
 		return collection;
 	}
 
