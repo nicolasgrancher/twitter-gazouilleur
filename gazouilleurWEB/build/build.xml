@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gazouilleurWEB" basedir="../">
+	
+	<!-- <property name="deploy.dir" value="/home/dysis/jboss-5.0.1.GA/server/default/deploy" /> -->
+	<property name="deploy.dir" value="C:/jboss-5.0.1.GA/server/default" />
+	
+	
+	<!-- Installation du connecteur MySQL et du fichier mysql-ds.xml -->
+	<target name="installationLibsRichFaces">
+		<copy todir="${deploy.dir}/lib" includeEmptyDirs="no">
+			<fileset dir="WebContent/WEB-INF/lib/">
+				<patternset>
+					<include name="**/*.jar" />
+				</patternset>
+			</fileset>
+		</copy>
+	</target>
+	
+</project>
