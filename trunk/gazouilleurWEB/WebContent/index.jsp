@@ -8,7 +8,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://java.sun.com/jsf/core">
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta content="fr-fr" http-equiv="Content-Language" />
@@ -127,30 +128,30 @@ body#show .protected {
 	</style>
 </head>
 <body class="sessions firefox-windows" id="new">
-	<f:view locale="fr">
-		<h1 id="header">
-			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/index.jsf" id="logo" accesskey="1" title="Gazouilleur: accueil">
-				<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250"/>
-			</h:outputLink>
-		</h1>
-		<h:panelGroup styleClass="navigation">
-			<a4j:include viewId="authentification.jsp" />
-			<a4j:include viewId="inscription.jsp" />
-		</h:panelGroup>
-		<f:verbatim><div class="content-bubble-arrow"></div></f:verbatim>
-		<center>
-			<rich:tabPanel style="margin-top:30px;" width="70%" switchType="client">
-		        <rich:tab label="Home">
-		        	<a4j:include viewId="principale.jsp" />
-		        </rich:tab>
-		        <rich:tab label="Suiveurs/Suivis">
-		        	<a4j:include viewId="suiveurs.jsp" />
-		        </rich:tab>
-		        <rich:tab label="Messages">
-		        	<a4j:include viewId="messages.jsp" />
-		        </rich:tab>
-		    </rich:tabPanel>
-	    </center>
-	</f:view>
+	<f:view>
+	<h1 id="header">
+		<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250"/>
+	</h1>
+	<h:panelGroup id="connexionMenu" styleClass="navigation">
+		<a4j:include viewId="authentification.jsp" />
+		<a4j:include viewId="inscription.jsp" />
+	</h:panelGroup>
+	<center>
+		<rich:tabPanel style="margin-top:30px;" width="70%" switchType="client">
+	        <rich:tab label="Home" id="tabHome">
+	        	<a4j:include viewId="principale.jsp" />
+	        </rich:tab>
+	        <rich:tab label="Suiveurs/Suivis" id="tabSuiveurs">
+	        	<a4j:include viewId="suiveurs.jsp" />
+	        </rich:tab>
+	        <rich:tab label="Messages" id="tabMessages">
+	        	<a4j:include viewId="messages.jsp" />
+	        </rich:tab>
+	        <rich:tab label="Variables" id="tabVariables">
+	        	<a4j:include viewId="variables.jsp" />
+	        </rich:tab>
+	    </rich:tabPanel>
+    </center>
+    </f:view>
 </body>
 </html>
