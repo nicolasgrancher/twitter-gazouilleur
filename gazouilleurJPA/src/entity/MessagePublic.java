@@ -1,12 +1,14 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "message_public")
-public class MessagePublic {
+public class MessagePublic implements Serializable {
+	private static final long serialVersionUID = 1300826293782127962L;
 
 	@Id
 	@GeneratedValue

@@ -1,15 +1,17 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "message_prive")
-public class MessagePrive {
-	
+public class MessagePrive implements Serializable {
+	private static final long serialVersionUID = -6299354353606059148L;
+
 	@Id	
 	@GeneratedValue
-	private Long id;
+	private int id;
 	
 	private String message;
 	
@@ -26,11 +28,11 @@ public class MessagePrive {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
