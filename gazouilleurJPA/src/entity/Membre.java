@@ -34,12 +34,12 @@ public class Membre implements Serializable {
 	@OneToMany(mappedBy="emetteur")
 	private List<MessagePrive> messagesPrivesEmis;
 	
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.REMOVE})
 	@JoinTable(name = "membre_suivi", joinColumns = @JoinColumn(name = "membre_num", referencedColumnName = "id"), 
 									   inverseJoinColumns = @JoinColumn(name = "suivi_num", referencedColumnName = "id"))
     private List<Membre> listSuivis; // les amis que le membre suit
 	
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.REMOVE})
 	@JoinTable(name = "membre_suiveur", joinColumns = @JoinColumn(name = "membre_num", referencedColumnName = "id"), 
 										inverseJoinColumns = @JoinColumn(name = "suiveur_num", referencedColumnName = "id"))
 	private List<Membre> listSuiveurs; // les amis qui suivent le membre
