@@ -137,14 +137,14 @@ body#show .protected {
 		<a4j:include viewId="inscription.jsp" />
 	</h:panelGroup>
 	<center>
-		<rich:tabPanel style="margin-top:30px;" width="70%" switchType="client">
+		<rich:tabPanel style="margin-top:30px;" width="70%" switchType="client" id="tabPanel">
 	        <rich:tab label="Home" id="tabHome">
 	        	<a4j:include viewId="principale.jsp" />
 	        </rich:tab>
-	        <rich:tab label="Suiveurs/Suivis" id="tabSuiveurs">
-	        	<a4j:include viewId="suiveurs.jsp" />
+	        <rich:tab label="Suiveurs/Suivis" id="tabSuiveurs" disabled="#{membreControlleur.estConnecte ==  false}">
+<!--	        	a4j:include viewId="suiveurs.jsp" /-->
 	        </rich:tab>
-	        <rich:tab label="Messages" id="tabMessages">
+	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
 	        	<a4j:include viewId="messages.jsp" />
 	        </rich:tab>
 	        <rich:tab label="Variables" id="tabVariables">

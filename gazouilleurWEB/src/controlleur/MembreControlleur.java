@@ -1,6 +1,8 @@
 package controlleur;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServlet;
 
 import org.richfaces.component.html.HtmlModalPanel;
@@ -21,9 +23,12 @@ public class MembreControlleur extends HttpServlet{
 	private Membre membre = new Membre();
 	private boolean estConnecte;
 	private String password2;
+	private String messagePublic;
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
+	
+	private String test = "test";
 	
 	public String creerMembre() {
 		closePanelInscription = false;
@@ -54,9 +59,20 @@ public class MembreControlleur extends HttpServlet{
 	public String connexion(){
 		closePanelConnexion = false;
 		membre = membreFacade.connexionMembre(membre.getPseudo(), membre.getPassword());
+		if(membre == null) {
+			membre = new Membre();
+			FacesContext.getCurrentInstance().addMessage("formConnexion:login", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login/mot de passe invalide", "Login/mot de passe invalide"));
+			return null;
+		}
 		estConnecte = true;
 		closePanelConnexion = true;
-		return "connexion";
+		//return "connexion";
+		return null;
+	}
+	
+	public String envoyerMessagePublic() {
+		
+		return "message.public.envoye";
 	}
 	
 	private boolean verifierPassword() {
@@ -101,5 +117,21 @@ public class MembreControlleur extends HttpServlet{
 
 	public void setClosePanelConnexion(boolean closePanelConnexion) {
 		this.closePanelConnexion = closePanelConnexion;
+	}
+
+	public String getMessagePublic() {
+		return messagePublic;
+	}
+
+	public void setMessagePublic(String messagePublic) {
+		this.messagePublic = messagePublic;
+	}
+
+	public String getTest() {
+		return test;
+	}
+
+	public void setTest(String test) {
+		this.test = test;
 	}
 }

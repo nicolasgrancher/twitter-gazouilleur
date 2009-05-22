@@ -7,7 +7,7 @@
 		<rich:spacer height="15px" width="100%"/>
 		<a4j:form id="message_form" style="text-align:center;">
 			<h:inputTextarea id="message_text_area" style=" width : 95%;" />
-			<h:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"/>
+			<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"/>
 			<h:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" onclick="this.form.elements[0].value=''" immediate="true"/>	
 		</a4j:form>
         <rich:spacer height="25px" width="100%"/>

@@ -37,7 +37,7 @@
   				<!-- Modifier la valeur onclick pour ajouter le script de connexion -->
 			<a4j:commandButton value="Ok" action="#{membreControlleur.creerMembre}" id="formButton" 
 				oncomplete="if('#{membreControlleur.closePanelInscription}' == 'true'){javascript:Richfaces.hideModalPanel('panel_inscription');}"
-				reRender="connexionMenu,variables"/>
+				reRender="connexionMenu"/>
 		</h:panelGroup>
 	</f:facet>
  	</h:panelGrid>
