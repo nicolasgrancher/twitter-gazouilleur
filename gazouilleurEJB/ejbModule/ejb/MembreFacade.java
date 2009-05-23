@@ -99,10 +99,17 @@ public interface MembreFacade {
 	public Collection <Membre> getSuiveur(Membre membre);
 	
 	/**
-	 * Rechercher ami
+	 * Rechercher ami par pseudo
 	 * @param pseudo
 	 * @return
 	 */
 	public Collection <Membre> rechercheByPseudo(String pseudo);
+	
+	/**
+	 * Rechercher ami par email
+	 * @param pseudo
+	 * @return
+	 */
+	public Collection <Membre> rechercheByEmail(String email);
 
 }

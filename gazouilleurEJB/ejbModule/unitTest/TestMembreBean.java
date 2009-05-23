@@ -138,6 +138,16 @@ public class TestMembreBean extends TestCase {
 		}
 	}
 	
+	public void testRechercheByEmail() throws MembreException, NamingException {
+		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
+		Collection<Membre> membres = facade.rechercheByPseudo("adresse@mail.com");
+		Iterator<Membre> it = membres.iterator();
+		while (it.hasNext()) {
+			Membre membre = (Membre) it.next();
+			assertEquals("adresse@mail.com", membre.getPseudo());
+		}
+	}
+	
 	public void testSupprimerMembre() throws MembreException, NamingException {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre m1 = facade.getByPseudo("Toto");
