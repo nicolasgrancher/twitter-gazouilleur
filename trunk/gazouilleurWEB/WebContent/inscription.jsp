@@ -52,12 +52,15 @@
   				<h:panelGroup style="display:block; text-align:center">
   				<!-- Modifier la valeur onclick pour ajouter le script de connexion -->
 					<a4j:commandButton value="Ok" action="#{membreControlleur.creerMembre}" id="formInscriptionButton" 
-						oncomplete="if('#{membreControlleur.closePanelInscription}' == 'true'){javascript:Richfaces.hideModalPanel('panel_inscription');}"/>
+						oncomplete="if('#{membreControlleur.closePanelInscription}' == 'true'){javascript:Richfaces.hideModalPanel('panel_inscription');}"
+						reRender="panelGroupConnexion,panelGroupInscription,variables"/>
 				</h:panelGroup>
 			</f:facet>
  		</h:panelGrid>
 	</a4j:form>
 </rich:modalPanel>
-<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
-     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
-</a4j:commandLink>
+<h:panelGroup id="panelGroupInscription">
+	<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
+	     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
+	</a4j:commandLink>
+</h:panelGroup>

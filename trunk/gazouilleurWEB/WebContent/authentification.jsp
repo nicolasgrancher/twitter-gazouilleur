@@ -5,7 +5,7 @@
 
 
 	<!-- Popup de connexion -->
-	<rich:modalPanel id="panel_connexion" autosized="true" onhide="alert('toto')">
+	<rich:modalPanel id="panel_connexion" autosized="true">
 		<f:facet name="header">
             <h:panelGroup>
                 <h:outputText value="Authentification"></h:outputText>
@@ -37,19 +37,18 @@
 	    			<h:panelGroup style="display:block; text-align:center">
 						<a4j:commandButton value="Ok" id="formConnexionBouton"
 							action="#{membreControlleur.connexion}" 
-							oncomplete="if ('#{membreControlleur.closePanelConnexion}' == 'true') { Richfaces.hideModalPanel('panel_connexion'); }">
-							<!-- rich:componentControl for="panelErreurLogin" attachTo="formConnexionBouton" operation="show" event="onclick"/ -->
+							oncomplete="if ('#{membreControlleur.closePanelConnexion}' == 'true') { Richfaces.hideModalPanel('panel_connexion'); }"
+							reRender="panelGroupConnexion,panelGroupInscription,variables">
 						</a4j:commandButton>
 					</h:panelGroup>
 				</f:facet>
 		  	</h:panelGrid>
 	  	</a4j:form>
-	  	<a4j:support event="onhide" oncomplete="alert('test')"/>
 	</rich:modalPanel>
 	<!-- Fin popup de connexion -->
 	
 	<!-- Lien de connexion affichant la popup de connexion -->
-	
+<h:panelGroup id="panelGroupConnexion">	
 	<a4j:commandLink value="Se connecter" id="lienConnexion" rendered="#{membreControlleur.estConnecte == false}">
         <rich:componentControl for="panel_connexion" attachTo="lienConnexion" operation="show" event="onclick"/>
     </a4j:commandLink>
@@ -58,5 +57,6 @@
     <a4j:form>
 		<a4j:commandLink value="Se déconnecter" id="lienDeconnexion" 
 			rendered="#{membreControlleur.estConnecte}" action="#{membreControlleur.deconnexion}"
-			reRender="connexionMenu,variables"/>
+			reRender="panelGroupConnexion,panelGroupInscription,variables"/>
 	</a4j:form>
+</h:panelGroup>
