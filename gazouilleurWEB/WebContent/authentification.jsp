@@ -5,7 +5,7 @@
 
 
 	<!-- Popup de connexion -->
-	<rich:modalPanel id="panel_connexion" width="300" height="100" onhide="alert('toto')">
+	<rich:modalPanel id="panel_connexion" autosized="true" onhide="alert('toto')">
 		<f:facet name="header">
             <h:panelGroup>
                 <h:outputText value="Authentification"></h:outputText>
@@ -18,12 +18,21 @@
             </h:panelGroup>
         </f:facet>
         <a4j:form id="formConnexion">
+        	<rich:messages layout="list" showSummary="true" style="color:Red;">
+				<f:facet name="errorMarker">
+					<h:graphicImage value="/resources/images/error.gif" />   
+				</f:facet>
+	 		</rich:messages>
+        		
 	        <h:panelGrid columns="2">
-	        	<rich:message for="login"></rich:message><rich:message for="password"></rich:message>
 		     	<h:outputLabel id="loginLabel" for="login" value="Login" />
-		     	<h:inputText id="login" value="#{membreControlleur.membre.pseudo}" />
-		     	<h:outputLabel id="passwordLabel" for="password" value="Mot de passe" />
-		     	<h:inputSecret id="password" value="#{membreControlleur.membre.password}"/>
+		     	<h:inputText id="login" value="#{membreControlleur.membre.pseudo}">
+		     		<rich:ajaxValidator event="onblur" />
+		     	</h:inputText>
+		     	<h:outputLabel id="passwordLabel" for="password" value="Mot de passe"/>
+		     	<h:inputSecret id="password" value="#{membreControlleur.membre.password}">
+		     		<rich:ajaxValidator event="onblur" />
+		     	</h:inputSecret>
 		  		<f:facet name="footer">
 	    			<h:panelGroup style="display:block; text-align:center">
 						<a4j:commandButton value="Ok" id="formConnexionBouton"

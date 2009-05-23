@@ -22,6 +22,7 @@ public class MembreControlleur extends HttpServlet{
 	
 	private Membre membre = new Membre();
 	private boolean estConnecte;
+	
 	private String password2;
 	private String messagePublic;
 	
@@ -33,21 +34,16 @@ public class MembreControlleur extends HttpServlet{
 	public String creerMembre() {
 		closePanelInscription = false;
 		try {
-//			if(!verifierPassword()){
-//				throw new Exception("Les mots de passe ne correspondent pas.");
-//			}
-			System.out.println(membre);
-			//System.out.println(membre);
+			if(!verifierPassword()){
+				throw new Exception("Les mots de passe ne correspondent pas.");
+			}
 			membre = membreFacade.creerMembre(membre);
 			closePanelInscription = true;
 			estConnecte = true;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
-		//membre.setPseudo(membre.getPassword());
-		//System.out.println(membre);
-		return "membre.cree";
+		return null;
 	}
 	
 	public String deconnexion(){
@@ -61,7 +57,7 @@ public class MembreControlleur extends HttpServlet{
 		membre = membreFacade.connexionMembre(membre.getPseudo(), membre.getPassword());
 		if(membre == null) {
 			membre = new Membre();
-			FacesContext.getCurrentInstance().addMessage("formConnexion:login", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login/mot de passe invalide", "Login/mot de passe invalide"));
+			FacesContext.getCurrentInstance().addMessage("formConnexion", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login/mot de passe invalide", "Login/mot de passe invalide"));
 			return null;
 		}
 		estConnecte = true;
