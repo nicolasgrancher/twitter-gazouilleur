@@ -89,14 +89,14 @@ public class TestMembreBean extends TestCase {
 	public void testGetSuivi() throws MembreException, NamingException {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre membre = facade.getByPseudo("Toto");
-		facade.getSuivi(membre);
+		membre.setListSuivis((List<Membre>) facade.getSuivi(membre));
 		assertNotNull(membre.getListSuivis());
 	}
 
 	public void testGetSuiveur() throws MembreException, NamingException {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre membre = facade.getByPseudo("Toto");
-		facade.getSuiveur(membre);
+		membre.setListSuiveurs((List<Membre>) facade.getSuiveur(membre));
 		assertNotNull(membre.getListSuiveurs());
 	}
 
