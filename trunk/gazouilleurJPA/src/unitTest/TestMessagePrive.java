@@ -52,9 +52,9 @@ extends TestCase
 		d2.setEmail("testdest@test.com");
 		d2.setPassword("98765432");
 		
-		m1.setId(new Long(1));
-		m2.setId(new Long(2));
-		m3.setId(new Long(3));
+		m1.setId(1);
+		m2.setId(2);
+		m3.setId(3);
 		m1.setMessage("hello world !");
 		m2.setMessage("hello world !");
 		m1.setEmetteur(e1);
@@ -76,7 +76,7 @@ extends TestCase
 	}
 	
 	public void testId() {
-		assertEquals(new Long(1), m1.getId());
+		assertEquals(1, m1.getId());
 	}
 	public void testMessagePrive(){
 		assertNotSame(m1, m2);

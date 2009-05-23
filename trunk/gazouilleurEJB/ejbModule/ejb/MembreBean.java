@@ -2,6 +2,7 @@ package ejb;
 
 
 import java.util.*;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -179,13 +180,27 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Rechercher ami
+	 * Rechercher ami par pseudo
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection <Membre> rechercheByPseudo(String pseudo) {
 		try {
 			Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.pseudo LIKE CONCAT('%',?0,'%')");
 			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(0, pseudo).getResultList();
+			return membres;
+		} catch(NoResultException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Rechercher ami par email
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection <Membre> rechercheByEmail(String email){
+		try {
+			Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.email LIKE CONCAT('%',?0,'%')");
+			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(0, email).getResultList();
 			return membres;
 		} catch(NoResultException e) {
 			return null;
