@@ -29,7 +29,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Récupération de membre par ID, Pseudo et Email.
+	 * RÃ©cupÃ©ration de membre par ID, Pseudo et Email.
 	 */
 	public Membre getById(int id) {
 		return (Membre) entityMgr.find(Membre.class, id);
@@ -56,7 +56,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * S’inscrire
+	 * S'inscrire
 	 */
 	public Membre creerMembre (Membre membre) throws MembreException { 
 		try{
@@ -64,7 +64,7 @@ public class MembreBean implements MembreFacade {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			throw new MembreException("Pseudo déja utilisé");
+			throw new MembreException("Pseudo dÃ©ja utilisÃ©");
 		}
 		return membre;
 	}
@@ -88,7 +88,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Se déconnecter
+	 * Se dï¿½connecter
 	 */
 	public Membre deconnexionMembre (Membre membre) {return null;}
 
@@ -100,7 +100,7 @@ public class MembreBean implements MembreFacade {
 		String pseudo = membre.getPseudo();
 		String password = membre.getPassword();
 		String email = membre.getEmail();
-		//Vérification des donnees
+		//Vï¿½rification des donnees
 		if(membre !=null){
 			membreupdate.setNom(membre.getNom());
 			membreupdate.setPrenom(membre.getPrenom());
@@ -166,7 +166,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuivi(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistée
+		collection.size(); // chargement de la collection persistï¿½e
 		return collection;
 	}
 	/**
@@ -175,7 +175,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuiveur(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistée
+		collection.size(); // chargement de la collection persistï¿½e
 		return collection;
 	}
 
