@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.hibernate.validator.Email;
+import org.hibernate.validator.NotEmpty;
+
 @Entity
 @Table(name = "membre", uniqueConstraints = {@UniqueConstraint(columnNames={"pseudo"})})
 public class Membre implements Serializable {
@@ -15,14 +18,20 @@ public class Membre implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotEmpty(message="Le champ Pseudo ne doit pas être vide.")
 	private String pseudo;
 	
+	@NotEmpty(message="Le champ Nom ne doit pas être vide.")
 	private String nom;
 	
+	@NotEmpty(message="Le champ Prénom ne doit pas être vide.")
 	private String prenom;
 	
+	@NotEmpty(message="Le champ Email ne doit pas être vide.")
+	@Email(message="Le champs Email doit contenir une adresse e-mail.")
 	private String email;
 	
+	@NotEmpty(message="Le champ Mot de passe ne doit pas être vide.")
 	private String password;
 	
 	@OneToMany(mappedBy="emetteur")
@@ -162,7 +171,7 @@ public class Membre implements Serializable {
 		return getPseudo() + " (" + getPrenom()+ " " + getNom() + ")";
 	}
 	
-	//Methodes M�tiers
+	//Methodes M�tiers
 	public void ajouterSuivi(Membre membre) {
 		if (!this.getListSuivis().contains(membre)) {
 			this.getListSuivis().add(membre);
