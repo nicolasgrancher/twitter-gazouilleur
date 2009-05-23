@@ -3,6 +3,7 @@ package controlleur;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.jms.Session;
 import javax.servlet.http.HttpServlet;
 
 import org.richfaces.component.html.HtmlModalPanel;
