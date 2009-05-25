@@ -57,6 +57,9 @@ public class Membre implements Serializable {
 		super();
 		listSuivis = new ArrayList<Membre>();
 		listSuiveurs = new ArrayList<Membre>();
+		messagesPublics = new ArrayList<MessagePublic>();
+		messagesPrivesRecus = new ArrayList<MessagePrive>();
+		messagesPrivesEmis = new ArrayList<MessagePrive>();
 	}
 	
 	public Membre (String pseudo, String nom, String prenom, String email, String password) {
