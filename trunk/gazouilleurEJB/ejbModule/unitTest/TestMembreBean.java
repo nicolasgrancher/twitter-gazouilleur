@@ -25,6 +25,10 @@ public class TestMembreBean extends TestCase {
 	public void testCreerMembre() throws MembreException, NamingException { 
 		Membre m = new Membre();
 		m.setPseudo("Toto");
+		m.setNom("Dupond");
+		m.setPrenom("Jean");
+		m.setEmail("jean@dupond.com");
+		m.setPassword("87654321");
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		m = facade.creerMembre(m);
 		assertNotSame(0, m.getId());
@@ -48,7 +52,11 @@ public class TestMembreBean extends TestCase {
 	
 	public void testGetByEmail() throws MembreException, NamingException {
 		Membre m1 = new Membre();
+		m1.setPseudo("test");
+		m1.setNom("Gamotte");
+		m1.setPrenom("Albert");
 		m1.setEmail("test@test.com");
+		m1.setPassword("12345678");
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		m1 = facade.creerMembre(m1);
 		
@@ -61,7 +69,10 @@ public class TestMembreBean extends TestCase {
 		MembreFacade facade = (MembreFacade) annuaire.lookup("MembreBean");
 		Membre m = new Membre();
 		m.setPseudo("Jean");
+		m.setNom("Louis");
+		m.setPrenom("Jean");
 		m.setPassword("12345678");
+		m.setEmail("jean-louis@free.fr");
 		m = facade.creerMembre(m);
 		Membre membre = facade.connexionMembre("Jean", "12345678");
 		assertNotNull(membre);
@@ -105,6 +116,10 @@ public class TestMembreBean extends TestCase {
 		Membre membre = facade.getByPseudo("Toto");
 		Membre ami = new Membre();
 		ami.setPseudo("Titi");
+		ami.setNom("Titi");
+		ami.setPrenom("Titi");
+		ami.setPassword("12345678");
+		ami.setEmail("titi@toto.com");
 		ami = facade.creerMembre(ami);
 		
 		facade.ajouterAmi(membre, ami);
