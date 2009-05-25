@@ -29,7 +29,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * RÃ©cupÃ©ration de membre par ID, Pseudo et Email.
+	 * Récupération de membre par ID, Pseudo et Email.
 	 */
 	public Membre getById(int id) {
 		return (Membre) entityMgr.find(Membre.class, id);
@@ -64,7 +64,7 @@ public class MembreBean implements MembreFacade {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			throw new MembreException("Pseudo dÃ©ja utilisÃ©");
+			throw new MembreException("Pseudo déja utilisé");
 		}
 		return membre;
 	}
@@ -88,7 +88,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Se dï¿½connecter
+	 * Se déconnecter
 	 */
 	public Membre deconnexionMembre (Membre membre) {return null;}
 
@@ -100,7 +100,7 @@ public class MembreBean implements MembreFacade {
 		String pseudo = membre.getPseudo();
 		String password = membre.getPassword();
 		String email = membre.getEmail();
-		//Vï¿½rification des donnees
+		//Vérification des donnees
 		if(membre !=null){
 			membreupdate.setNom(membre.getNom());
 			membreupdate.setPrenom(membre.getPrenom());
@@ -166,7 +166,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuivi(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistï¿½e
+		collection.size(); // chargement de la collection persistée
 		return collection;
 	}
 	/**
@@ -175,7 +175,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuiveur(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistï¿½e
+		collection.size(); // chargement de la collection persistée
 		return collection;
 	}
 
