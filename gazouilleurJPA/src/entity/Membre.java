@@ -6,10 +6,17 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.validator.Email;
 import org.hibernate.validator.NotEmpty;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="findByPseudo", query="SELECT m FROM Membre as m WHERE m.pseudo LIKE CONCAT('%',?1,'%')"),
+	@NamedQuery(name="findByEmail", query="SELECT m FROM Membre as m WHERE m.email LIKE CONCAT('%',?1,'%')"),
+	@NamedQuery(name="findByPseudoAndPassword", query="Select m FROM Membre m WHERE m.pseudo = ?1 AND m.password = ?2"),
+})
 @Table(name = "membre", uniqueConstraints = {@UniqueConstraint(columnNames={"pseudo"})})
 public class Membre implements Serializable {
 	private static final long serialVersionUID = -3343648899161328469L;
@@ -18,20 +25,20 @@ public class Membre implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@NotEmpty(message="Le champ Pseudo ne doit pas être vide.")
+	@NotEmpty(message="Le champ Pseudo ne doit pas Ãªtre vide.")
 	private String pseudo;
 	
-	@NotEmpty(message="Le champ Nom ne doit pas être vide.")
+	@NotEmpty(message="Le champ Nom ne doit pas Ãªtre vide.")
 	private String nom;
 	
-	@NotEmpty(message="Le champ Prénom ne doit pas être vide.")
+	@NotEmpty(message="Le champ PrÃ©nom ne doit pas Ãªtre vide.")
 	private String prenom;
 	
-	@NotEmpty(message="Le champ Email ne doit pas être vide.")
+	@NotEmpty(message="Le champ Email ne doit pas Ãªtre vide.")
 	@Email(message="Le champs Email doit contenir une adresse e-mail.")
 	private String email;
 	
-	@NotEmpty(message="Le champ Mot de passe ne doit pas être vide.")
+	@NotEmpty(message="Le champ Mot de passe ne doit pas Ãªtre vide.")
 	private String password;
 	
 	@OneToMany(mappedBy="emetteur")
@@ -105,27 +112,31 @@ public class Membre implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public void setMessagesPublics(List<MessagePublic> messagesPublics) {
-		this.messagesPublics = messagesPublics;
-	}
-	public List<MessagePublic> getMessagesPublics() {
-		return messagesPublics;
-	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
 	public String getPassword() {
 		return password;
 	}
+	
+	public void setMessagesPublics(List<MessagePublic> messagesPublics) {
+		this.messagesPublics = messagesPublics;
+	}
+	@OneToMany(fetch=FetchType.EAGER)
+	public List<MessagePublic> getMessagesPublics() {
+		return messagesPublics;
+	}
 	public void setMessagesPrivesRecus(List<MessagePrive> messagesPrivesRecus) {
 		this.messagesPrivesRecus = messagesPrivesRecus;
 	}
+	@OneToMany(fetch=FetchType.EAGER)
 	public List<MessagePrive> getMessagesPrivesRecus() {
 		return messagesPrivesRecus;
 	}
 	public void setMessagesPrivesEmis(List<MessagePrive> messagesPrivesEmis) {
 		this.messagesPrivesEmis = messagesPrivesEmis;
 	}
+	@OneToMany(fetch=FetchType.EAGER)
 	public List<MessagePrive> getMessagesPrivesEmis() {
 		return messagesPrivesEmis;
 	}
@@ -174,7 +185,7 @@ public class Membre implements Serializable {
 		return getPseudo() + " (" + getPrenom()+ " " + getNom() + ")";
 	}
 	
-	//Methodes Métiers
+	//Methodes Mï¿½tiers
 	public void ajouterSuivi(Membre membre) {
 		if (!this.getListSuivis().contains(membre)) {
 			this.getListSuivis().add(membre);

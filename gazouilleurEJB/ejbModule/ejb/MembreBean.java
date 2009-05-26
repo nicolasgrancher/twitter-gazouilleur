@@ -29,14 +29,14 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Récupération de membre par ID, Pseudo et Email.
+	 * Rï¿½cupï¿½ration de membre par ID, Pseudo et Email.
 	 */
 	public Membre getById(int id) {
 		return (Membre) entityMgr.find(Membre.class, id);
 	}
 
 	public Membre getByPseudo(String pseudo) throws MembreException {
-		Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.pseudo = ?1");
+		Query q = entityMgr.createNamedQuery("findByPseudo");
 		try{
 			Membre membre = (Membre)q.setParameter(1, pseudo).getSingleResult();
 			return membre;
@@ -46,7 +46,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	public Membre getByEmail(String email) throws MembreException {
-		Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.email = ?1");
+		Query q = entityMgr.createNamedQuery("findByEmail");
 		try{
 			Membre membre = (Membre)q.setParameter(1, email).getSingleResult();
 			return membre;
@@ -64,7 +64,7 @@ public class MembreBean implements MembreFacade {
 		}
 		catch(Exception e){
 			e.printStackTrace();
-			throw new MembreException("Pseudo déja utilisé");
+			throw new MembreException("Pseudo dÃ©ja utilisÃ©");
 		}
 		return membre;
 	}
@@ -79,7 +79,7 @@ public class MembreBean implements MembreFacade {
 	 */
 	public Membre connexionMembre (String pseudo, String password) {
 		try {
-			Query q = entityMgr.createQuery("Select m FROM Membre m WHERE m.pseudo = ?1 AND m.password = ?2");
+			Query q = entityMgr.createNamedQuery("findByPseudoAndPassword");
 			Membre membre = (Membre) q.setParameter(1, pseudo).setParameter(2, password).getSingleResult();
 			return membre;
 		} catch(NoResultException e) {
@@ -88,7 +88,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	/**
-	 * Se déconnecter
+	 * Se dï¿½connecter
 	 */
 	public Membre deconnexionMembre (Membre membre) {return null;}
 
@@ -100,7 +100,7 @@ public class MembreBean implements MembreFacade {
 		String pseudo = membre.getPseudo();
 		String password = membre.getPassword();
 		String email = membre.getEmail();
-		//Vérification des donnees
+		//Vï¿½rification des donnees
 		if(membre !=null){
 			membreupdate.setNom(membre.getNom());
 			membreupdate.setPrenom(membre.getPrenom());
@@ -166,7 +166,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuivi(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistée
+		collection.size(); // chargement de la collection persistï¿½e
 		return collection;
 	}
 	/**
@@ -175,7 +175,7 @@ public class MembreBean implements MembreFacade {
 	public Collection <Membre> getSuiveur(Membre membre) {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
-		collection.size(); // chargement de la collection persistée
+		collection.size(); // chargement de la collection persistï¿½e
 		return collection;
 	}
 
@@ -185,8 +185,8 @@ public class MembreBean implements MembreFacade {
 	@SuppressWarnings("unchecked")
 	public Collection <Membre> rechercheByPseudo(String pseudo) {
 		try {
-			Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.pseudo LIKE CONCAT('%',?0,'%')");
-			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(0, pseudo).getResultList();
+			Query q = entityMgr.createNamedQuery("findByPseudo");
+			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(1, pseudo).getResultList();
 			return membres;
 		} catch(NoResultException e) {
 			return null;
@@ -199,8 +199,8 @@ public class MembreBean implements MembreFacade {
 	@SuppressWarnings("unchecked")
 	public Collection <Membre> rechercheByEmail(String email){
 		try {
-			Query q = entityMgr.createQuery("SELECT m FROM Membre as m WHERE m.email LIKE CONCAT('%',?0,'%')");
-			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(0, email).getResultList();
+			Query q = entityMgr.createNamedQuery("findByEmail");
+			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(1, email).getResultList();
 			return membres;
 		} catch(NoResultException e) {
 			return null;
