@@ -41,13 +41,14 @@ public class Membre implements Serializable {
 	@NotEmpty(message="Le champ Mot de passe ne doit pas être vide.")
 	private String password;
 	
-	@OneToMany(mappedBy="emetteur")
+	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
 	private List<MessagePublic> messagesPublics;
 	
-	@OneToMany(mappedBy="emetteur")
+	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
 	private List<MessagePrive> messagesPrivesRecus;
 	
-	@OneToMany(mappedBy="emetteur")
+	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
+	@JoinColumn(name="emetteur")
 	private List<MessagePrive> messagesPrivesEmis;
 	
 	@ManyToMany(cascade = {CascadeType.REMOVE})
@@ -122,26 +123,22 @@ public class Membre implements Serializable {
 	public void setMessagesPublics(List<MessagePublic> messagesPublics) {
 		this.messagesPublics = messagesPublics;
 	}
-	@OneToMany(fetch=FetchType.EAGER)
 	public List<MessagePublic> getMessagesPublics() {
 		return messagesPublics;
 	}
 	public void setMessagesPrivesRecus(List<MessagePrive> messagesPrivesRecus) {
 		this.messagesPrivesRecus = messagesPrivesRecus;
 	}
-	@OneToMany(fetch=FetchType.EAGER)
 	public List<MessagePrive> getMessagesPrivesRecus() {
 		return messagesPrivesRecus;
 	}
 	public void setMessagesPrivesEmis(List<MessagePrive> messagesPrivesEmis) {
 		this.messagesPrivesEmis = messagesPrivesEmis;
 	}
-	@OneToMany(fetch=FetchType.EAGER)
 	public List<MessagePrive> getMessagesPrivesEmis() {
 		return messagesPrivesEmis;
 	}
 	
-	@ManyToMany(fetch=FetchType.EAGER)
     public List<Membre> getListSuivis() {
         return listSuivis;
     }
@@ -149,7 +146,6 @@ public class Membre implements Serializable {
         this.listSuivis = listSuivis;
     }
 	
-	@ManyToMany(fetch=FetchType.EAGER)
     public List <Membre> getListSuiveurs() {
 		return listSuiveurs;
 	}

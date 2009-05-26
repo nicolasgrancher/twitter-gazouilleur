@@ -170,11 +170,11 @@ public class TestMembreBean extends TestCase {
 		
 		try {
 			facade.getByPseudo("Toto");
-			// si l'execution continue jusqu'ici c'est que le membre "Toto" n'a pas été correctement supprimé
+			// si l'execution continue jusqu'ici c'est que le membre "Toto" n'a pas Ã©tÃ© correctement supprimÃ©
 			fail();
 		}
 		catch (MembreException e) {
-			// si une exception est levée c'est que le membre "Toto" n'existe pas. Il a donc bien été supprimé.
+			// si une exception est levÃ©e c'est que le membre "Toto" n'existe pas. Il a donc bien Ã©tÃ© supprimÃ©
 			assertTrue(true);
 		}
 	}
