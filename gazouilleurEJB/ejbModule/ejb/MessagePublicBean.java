@@ -1,6 +1,5 @@
 package ejb;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
