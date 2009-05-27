@@ -56,7 +56,7 @@ public interface MembreFacade {
 	public Membre connexionMembre (String pseudo, String password);
 	
 	/**
-	 * Se déconnecter
+	 * Se dï¿½connecter
 	 * @param membre
 	 * @return
 	 */
@@ -75,14 +75,14 @@ public interface MembreFacade {
 	 * @param membre
 	 * @param ami
 	 */
-	public void ajouterAmi (Membre membre, Membre ami);
+	public Membre ajouterAmi (Membre membre, Membre ami);
 	
 	/**
 	 * Ne plus suivre un ami
 	 * @param membre
 	 * @param ami
 	 */
-	public void supprimerAmi (Membre membre, Membre ami);
+	public Membre supprimerAmi (Membre membre, Membre ami);
 	
 	/**
 	 * Afficher ceux que je suis
