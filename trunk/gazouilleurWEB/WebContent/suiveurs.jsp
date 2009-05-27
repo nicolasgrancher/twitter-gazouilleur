@@ -4,28 +4,50 @@
 <%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
 
 
-
-<h:panelGrid columns="2" style="width:100%;">
-<!-- voir rich:dataList -->
-	<!--<rich:panel id="suiveurs" header="Suiveurs" style="margin-right:30%;width:40%;margin-left:30%;">
- 		<a4j:repeat value="#{membreControlleur.membre.listSuiveurs}" var="suiveur">
-       		<h:outputText value="#{suiveur.pseudo}" />
-       		<rich:contextMenu event="oncontextmenu" attachTo="" submitMode="none">
-			    <rich:menuItem value="Supprimer" />
+<style>
+	.cur { cursor: pointer; }
+</style>
+<center>
+	<a4j:form>
+	    <h:outputLabel id="ajoutSuiviLabel" for="ajoutSuivi" value="Suivez un ami" />
+	     	<h:inputText id="ajoutSuivi" value="#{membreControlleur.ajoutSuivi}" />
+	   	<a4j:commandButton action="#{membreControlleur.ajouterAmi}" value="Suivre" >
+	   	</a4j:commandButton>
+	</a4j:form>
+	<h:panelGrid columns="2" style="width:100%;">
+		<a4j:form>
+			<rich:contextMenu attached="false" id="suivisMenu" submitMode="ajax">
+				<rich:menuItem ajaxSingle="true">
+					Ne plus suivre {pseudo}
+					<a4j:actionparam assignTo="#{membreControlleur.ajoutSuivi}" value="{pseudo}"/>
+					<a4j:support action="#{membreControlleur.supprimerAmi}" event="oncomplete"/>
+				</rich:menuItem>
 			</rich:contextMenu>
-			<rich:separator height="2" lineType="dotted"/><br/>
-       	</a4j:repeat>
-	</rich:panel>-->
-	<rich:panel header="Suivis" style="margin-right:30%;width:40%;margin-left:30%;">
-      	<%
-      	for(int i=0; i<6; i++){
-      		%>
-      		<h:outputText value="suivi" />
-      		<rich:contextMenu event="oncontextmenu" attachTo="" submitMode="none">
-			    <rich:menuItem value="Supprimer" />
-			</rich:contextMenu>
-      		<%
-      	}
-      	%>
-	</rich:panel>
-</h:panelGrid>
+		</a4j:form>
+		<rich:dataTable id="suivisTable" value="#{membreControlleur.membre.listSuivis}"
+			var="suivi" rowClasses="cur">
+			<f:facet name="header">
+				<rich:columnGroup>
+					<rich:column>
+						Suivis
+					</rich:column>
+				</rich:columnGroup>
+			</f:facet>
+			<rich:column>
+				<h:outputText value="#{suivi.pseudo}" />
+			</rich:column>
+			<rich:componentControl event="onRowClick" for="suivisMenu" operation="show">
+				<f:param value="#{suivi.pseudo}" name="pseudo"/>
+			</rich:componentControl>
+		</rich:dataTable>
+		<rich:dataTable id="suiveursTable" value="#{membreControlleur.membre.listSuiveurs}"
+			var="suiveur">
+			<f:facet name="header">
+				Suiveurs
+			</f:facet>
+			<rich:column>
+				<h:outputText value="#{suiveur.pseudo}" />
+			</rich:column>
+		</rich:dataTable>
+	</h:panelGrid>
+</center>
