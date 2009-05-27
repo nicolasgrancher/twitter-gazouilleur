@@ -1,15 +1,24 @@
 package controlleur;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.ejb.EJB;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.jms.Session;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 
 import org.richfaces.component.html.HtmlModalPanel;
 
+import com.sun.corba.se.spi.protocol.RequestDispatcherRegistry;
+import com.sun.tools.ws.processor.model.Request;
+
 import ejb.MembreFacade;
 import entity.Membre;
+import exception.MembreException;
 
 public class MembreControlleur extends HttpServlet{
 
@@ -26,23 +35,31 @@ public class MembreControlleur extends HttpServlet{
 	
 	private String password2;
 	private String messagePublic;
+	private String ajoutSuivi;
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
-	
-	private String test = "test";
-	
+	private boolean suivisPollEnabled = false;
+
+	private Collection<Membre> listeMembres;
+
 	public String creerMembre() {
 		closePanelInscription = false;
+		System.out.println("membre = "+membre);
+		System.out.println("id = "+membre.getId());
 		try {
 			if(!verifierPassword()){
-				throw new Exception("Les mots de passe ne correspondent pas.");
+				throw new MembreException("Les mots de passe ne correspondent pas.");
 			}
 			membre = membreFacade.creerMembre(membre);
 			closePanelInscription = true;
 			estConnecte = true;
-		} catch (Exception e) {
+		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		} catch (Exception e) {
+			System.out.println("membre = "+membre);
+			System.out.println("id = "+membre.getId());
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -67,11 +84,29 @@ public class MembreControlleur extends HttpServlet{
 		return null;
 	}
 	
-	public String envoyerMessagePublic() {
-		
-		return "message.public.envoye";
+	public String ajouterAmi() {
+		try {
+			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
+			membre = membreFacade.ajouterAmi(membre, ami);
+		} catch (MembreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
+	public String supprimerAmi() {
+		try {
+			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
+			membre = membreFacade.supprimerAmi(membre, ami);
+		} catch (MembreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+		
 	private boolean verifierPassword() {
 		return password2.equals(membre.getPassword());
 	}
@@ -124,11 +159,37 @@ public class MembreControlleur extends HttpServlet{
 		this.messagePublic = messagePublic;
 	}
 
-	public String getTest() {
-		return test;
+	public Collection<Membre> getListeMembres() {
+		return listeMembres;
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+	public void setListeMembres(Collection<Membre> listeMembres) {
+		this.listeMembres = listeMembres;
+	}
+
+	public boolean isSuivisPollEnabled() {
+		return suivisPollEnabled;
+	}
+	
+	public String setSuivisPollEnabledToTrue() {
+		suivisPollEnabled = true;
+		return null;
+	}
+
+	public void setSuivisPollEnabled(boolean suivisPollEnabled) {
+		this.suivisPollEnabled = suivisPollEnabled;
+	}
+	
+	public String setSuivisPollEnabledToFalse() {
+		suivisPollEnabled = false;
+		return null;
+	}
+
+	public void setAjoutSuivi(String ajoutSuivi) {
+		this.ajoutSuivi = ajoutSuivi;
+	}
+
+	public String getAjoutSuivi() {
+		return ajoutSuivi;
 	}
 }

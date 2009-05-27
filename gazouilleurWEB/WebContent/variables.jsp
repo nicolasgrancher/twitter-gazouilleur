@@ -10,7 +10,9 @@
 	<h:outputText id="estConnecte" value="#{membreControlleur.estConnecte}"/>
 	<h:outputLabel id="closePanelConnexionLabel" for="closePanelConnexion" value="closePanelConnexion :" />
 	<h:outputText id="closePanelConnexion" value="#{membreControlleur.closePanelConnexion}"/>
-	<h:outputLabel id="testLabel" for="test" value="test :" />
-	<h:outputText id="test" value="#{membreControlleur.test}"/>
+	<h:outputLabel id="suivisPollLabel" for="suivisPoll" value="ajoutSuivi :" />
+	<h:outputText id="suivisPoll" value="#{membreControlleur.ajoutSuivi}"/>
+	<h:outputLabel id="listSuiviLabel" for="listSuivi" value="listSuivi :" />
+	<h:outputText id="listSuivi" value="#{membreControlleur.membre.listSuivis}"/>
 </h:panelGrid>
 
