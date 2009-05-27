@@ -14,6 +14,7 @@ import org.hibernate.validator.NotEmpty;
 @Entity
 @NamedQueries({
 	@NamedQuery(name="findByPseudo", query="SELECT m FROM Membre as m WHERE m.pseudo LIKE CONCAT('%',?1,'%')"),
+	@NamedQuery(name="findByPseudoExact", query="SELECT m FROM Membre as m WHERE m.pseudo = ?1"),
 	@NamedQuery(name="findByEmail", query="SELECT m FROM Membre as m WHERE m.email LIKE CONCAT('%',?1,'%')"),
 	@NamedQuery(name="findByPseudoAndPassword", query="Select m FROM Membre m WHERE m.pseudo = ?1 AND m.password = ?2"),
 })

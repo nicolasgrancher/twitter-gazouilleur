@@ -36,7 +36,7 @@ public class MembreBean implements MembreFacade {
 	}
 
 	public Membre getByPseudo(String pseudo) throws MembreException {
-		Query q = entityMgr.createNamedQuery("findByPseudo");
+		Query q = entityMgr.createNamedQuery("findByPseudoExact");
 		try{
 			Membre membre = (Membre)q.setParameter(1, pseudo).getSingleResult();
 			return membre;
