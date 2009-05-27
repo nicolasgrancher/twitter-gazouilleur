@@ -7,6 +7,14 @@
   <param-name>org.ajax4jsf.SKIN</param-name>
   <param-value>blueSky</param-value>
  </context-param>
+ <context-param>
+  <param-name>org.ajax4jsf.handleViewExpiredOnClient</param-name>
+  <param-value>true</param-value>
+ </context-param>
+ <context-param>
+  <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+  <param-value>server</param-value>
+ </context-param>
  <filter>
   <display-name>Ajax4jsf Filter</display-name>
   <filter-name>ajax4jsf</filter-name>
@@ -30,6 +38,9 @@
   <servlet-name>Faces Servlet</servlet-name>
   <url-pattern>*.jsf</url-pattern>
  </servlet-mapping>
+ <session-config>
+  <session-timeout>20</session-timeout>
+ </session-config>
  <login-config>
   <auth-method>BASIC</auth-method>
  </login-config>
