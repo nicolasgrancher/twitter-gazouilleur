@@ -133,7 +133,7 @@ public class MembreBean implements MembreFacade {
 	/**
 	 * Suivre un ami
 	 */
-	public void ajouterAmi (Membre membre, Membre ami) {
+	public Membre ajouterAmi (Membre membre, Membre ami) {
 		if (membre != null && ami != null) {
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
@@ -142,13 +142,16 @@ public class MembreBean implements MembreFacade {
 			
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
+			
+			return membre;
 		}
+		return null;
 	}
 
 	/**
 	 * Ne plus suivre un ami
 	 */
-	public void supprimerAmi (Membre membre, Membre ami) {
+	public Membre supprimerAmi (Membre membre, Membre ami) {
 		if (membre != null && ami != null) {
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
@@ -157,7 +160,10 @@ public class MembreBean implements MembreFacade {
 			
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
+			
+			return membre;
 		}	
+		return null;
 	}
 
 	/**
