@@ -13,9 +13,33 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta content="fr-fr" http-equiv="Content-Language" />
+
+<!-- 
+	Sommaire 
+entete de la page
+	menu de connexion
+		lien de connexion affichant la popup de connexion
+		lien de deconnexion
+		lien d'inscription affichant la popup d'inscription
+		popup de connexion
+		popup de d'inscription
+corps de la page
+	onglet principal
+	onglet suiveur
+		ajout d'un suivi
+		liste des suivis
+		liste des suiveurs
+	-- onglets manquants --
+
+popup d'expiration de session
+poll de gestion d'expiration de session
+
+-->
+
 <title>Gazouilleur</title>
 <link href="<%=request.getContextPath()%>/resources/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/resources/stylesheets/master.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/resources/stylesheets/connexionMenu.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
 	background: #9ae4e8 url(resources/images/bg.gif) fixed no-repeat top left;
@@ -50,12 +74,34 @@ body {
 	
 	<!-- Debut entete de la page -->
 	
-	<h1 id="header">
-		<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250"/>
-	</h1>
+	<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250"/>
 	
 	<!-- Debut menu de connexion -->
 	<h:panelGroup id="connexionMenu">
+	
+		<!-- Debut lien de connexion affichant la popup de connexion -->
+		<h:panelGroup id="panelGroupConnexion">	
+			<a4j:commandLink value="Se connecter" id="lienConnexion" rendered="#{membreControlleur.estConnecte == false}">
+		        <rich:componentControl for="panel_connexion" attachTo="lienConnexion" operation="show" event="onclick"/>
+		    </a4j:commandLink>
+		<!-- Fin lien de connexion -->
+	    
+		<!-- Debut lien de deconnexion -->
+		    <a4j:form>
+				<a4j:commandLink value="Se déconnecter" id="lienDeconnexion" 
+					rendered="#{membreControlleur.estConnecte}" action="#{membreControlleur.deconnexion}"
+					reRender="panelGroupConnexion,panelGroupInscription,tabPanel,variables"/>
+			</a4j:form>
+		<!-- Fin lien de deconnexion -->
+		</h:panelGroup>
+		
+		<!-- Debut lien d'inscription affichant la popup d'inscription-->
+		<h:panelGroup id="panelGroupInscription">
+			<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
+			     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
+			</a4j:commandLink>
+		</h:panelGroup>
+		<!-- Fin lien d'inscription -->
 	
 		<!-- Debut popup de connexion -->
 		<rich:modalPanel id="panel_connexion" autosized="true">
@@ -98,22 +144,6 @@ body {
 		  	</a4j:form>
 		</rich:modalPanel>
 		<!-- Fin popup de connexion -->
-		
-		<!-- Debut lien de connexion affichant la popup de connexion -->
-		<h:panelGroup id="panelGroupConnexion">	
-			<a4j:commandLink value="Se connecter" id="lienConnexion" rendered="#{membreControlleur.estConnecte == false}">
-		        <rich:componentControl for="panel_connexion" attachTo="lienConnexion" operation="show" event="onclick"/>
-		    </a4j:commandLink>
-		<!-- Fin lien de connexion -->
-	    
-		<!-- Debut lien de deconnexion -->
-		    <a4j:form>
-				<a4j:commandLink value="Se déconnecter" id="lienDeconnexion" 
-					rendered="#{membreControlleur.estConnecte}" action="#{membreControlleur.deconnexion}"
-					reRender="panelGroupConnexion,panelGroupInscription,tabPanel,variables"/>
-			</a4j:form>
-		<!-- Fin lien de deconnexion -->
-		</h:panelGroup>
 		
 		<!-- Debut popup d'inscription -->
 		<rich:modalPanel id="panel_inscription" autosized="true">
@@ -173,14 +203,6 @@ body {
 			</a4j:form>
 		</rich:modalPanel>
 		<!-- Fin popup d'inscription -->
-		
-		<!-- Debut lien d'inscription -->
-		<h:panelGroup id="panelGroupInscription">
-			<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
-			     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
-			</a4j:commandLink>
-		</h:panelGroup>
-		<!-- Fin lien d'inscription -->
 		
 	</h:panelGroup>
 	<!-- Fin menu de connexion -->
@@ -268,7 +290,11 @@ body {
 					<rich:dataTable id="suiveursTable" value="#{membreControlleur.membre.listSuiveurs}"
 						var="suiveur">
 						<f:facet name="header">
-							Suiveurs
+							<rich:columnGroup>
+								<rich:column>
+									Suiveurs
+								</rich:column>
+							</rich:columnGroup>
 						</f:facet>
 						<rich:column>
 							<h:outputText value="#{suiveur.pseudo}" />
@@ -308,7 +334,7 @@ body {
     <!-- Debut poll de gestion d'expiration de session -->
     <a4j:region>
     	<a4j:form>
-    		<a4j:poll id="sessioncheck" interval="1250000" reRender="sessioncheck" />
+    		<a4j:poll id="sessioncheck" interval="86400000" reRender="sessioncheck" />
     	</a4j:form>
     	<script type="text/javascript">
     		A4J.AJAX.onExpired = function(loc,expiredMsg){

@@ -39,7 +39,7 @@
   <url-pattern>*.jsf</url-pattern>
  </servlet-mapping>
  <session-config>
-  <session-timeout>20</session-timeout>
+  <session-timeout>1440</session-timeout>
  </session-config>
  <login-config>
   <auth-method>BASIC</auth-method>
