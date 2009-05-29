@@ -81,6 +81,8 @@ public class MembreBean implements MembreFacade {
 		try {
 			Query q = entityMgr.createNamedQuery("findByPseudoAndPassword");
 			Membre membre = (Membre) q.setParameter(1, pseudo).setParameter(2, password).getSingleResult();
+			membre.getListSuivis();
+			membre.getListSuiveurs();
 			return membre;
 		} catch(NoResultException e) {
 			return null;
