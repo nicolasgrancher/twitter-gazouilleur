@@ -141,6 +141,7 @@ public class Membre implements Serializable {
 	}
 	
     public List<Membre> getListSuivis() {
+    	listSuivis.size();
         return listSuivis;
     }
     public void setListSuivis(List<Membre> listSuivis) {
@@ -148,6 +149,7 @@ public class Membre implements Serializable {
     }
 	
     public List <Membre> getListSuiveurs() {
+    	listSuiveurs.size();
 		return listSuiveurs;
 	}
 	public void setListSuiveurs(List<Membre> listSuiveurs) {
