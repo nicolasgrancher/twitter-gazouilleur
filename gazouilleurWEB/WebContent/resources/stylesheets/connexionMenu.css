@@ -1,0 +1,10 @@
+#connexionMenu {
+	position: absolute;
+	right: 0;
+	top:0;
+	background-color: White;
+}
+
+#connexionMenu span {
+	display: inline;
+}
