@@ -2,7 +2,18 @@ package ejb;
 
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.annotation.Resource;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
+import javax.jms.Session;
+import javax.jms.Topic;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -16,6 +27,36 @@ public class MessagePublicBean implements MessagePublicFacade {
 	
 	@PersistenceContext(unitName = "gazouilleurJPA")
 	protected EntityManager entityMgr;
+	
+	// Used for JMS
+	@Resource(mappedName="/ConnectionFactory")
+	private ConnectionFactory connectionFactory;
+	@Resource(mappedName="/topic/MsgPublicTopic")
+	private Topic destinationMsgPublic;
+	private Connection connection;
+	
+	// Méthodes appelées avant et après postage
+	@PostConstruct
+    public void openConnection() {
+        try {
+            connection = connectionFactory.createConnection();
+        } catch (JMSException e) {
+            //logger.throwing(cname, "openConnection", e); (voir page 132 du boukin pour ajouter les logs)
+            throw new EJBException(e);
+        }
+    }
+
+    @PreDestroy
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (JMSException e) {
+                //logger.throwing(cname, "closeConnection", e); (idem)
+                throw new EJBException(e);
+            }
+        }
+    }
 	
 	public EntityManager getEntityMgr() {
 		return entityMgr;
@@ -70,6 +111,36 @@ public class MessagePublicBean implements MessagePublicFacade {
 			return messages;
 		} catch(NoResultException e) {
 			return null;
+		}
+	}
+	
+	// A tester avec test unitaire
+	public void publishMessagePublic(MessagePublic msgPublic){
+		Session session = null;
+		try{
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			
+			MessageProducer producer = session.createProducer(destinationMsgPublic);
+			
+			// Create a message
+            ObjectMessage objectMessage = session.createObjectMessage();
+            
+            // Add in header ??
+            Membre emetteur = msgPublic.getEmetteur();
+            objectMessage.setIntProperty("émetteur : ", emetteur.getId());
+            
+            objectMessage.setObject(msgPublic);
+			
+			producer.send(objectMessage);
+			
+		}catch (JMSException e){
+			throw new EJBException(e);
+		}finally{
+			try {
+                session.close();
+            } catch (JMSException e) {
+                throw new EJBException(e);
+            }
 		}
 	}
  }
