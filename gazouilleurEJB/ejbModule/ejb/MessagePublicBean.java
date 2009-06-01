@@ -29,9 +29,9 @@ public class MessagePublicBean implements MessagePublicFacade {
 	protected EntityManager entityMgr;
 	
 	// Used for JMS
-	@Resource(mappedName="/ConnectionFactory")
+	@Resource(mappedName="ConnectionFactory")
 	private ConnectionFactory connectionFactory;
-	@Resource(mappedName="/topic/MsgPublicTopic")
+	@Resource(mappedName="topic/MsgPublicTopic")
 	private Topic destinationMsgPublic;
 	private Connection connection;
 	

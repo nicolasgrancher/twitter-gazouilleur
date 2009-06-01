@@ -12,13 +12,13 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import entity.MessagePublic;
 
-@MessageDriven(mappedName = "jms/topic/MsgPublicTopic", activationConfig = {
-	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-	@ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable"),
-	@ActivationConfigProperty(propertyName = "clientId", propertyValue = "emailSenderID"),
-	@ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "EmailSender")
+@MessageDriven(mappedName = "topic/MsgPublicTopic", activationConfig = {
+	@ActivationConfigProperty(propertyName="destination",propertyValue="topic/MsgPublicTopic"),
+	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
+	
+	
 })
-
+//@ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")
 public class MsgPublicMDB implements MessageListener {
 	
 	@Override
