@@ -49,6 +49,7 @@ public class MembreControlleur extends HttpServlet{
 	private String messagePublic;
 	private String messagePrive;
 	private String ajoutSuivi;
+	private String destinataireMessagePrive;
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
@@ -56,13 +57,12 @@ public class MembreControlleur extends HttpServlet{
 
 	private Collection<Membre> listeMembres = new ArrayList<Membre>();
 	private Collection<MessagePublic> messagesPublics = new ArrayList<MessagePublic>();
+	private Collection<MessagePublic> messagesPerso = new ArrayList<MessagePublic>();
 	private Collection<MessagePrive> messagesPrivesEmis = new ArrayList<MessagePrive>();
 	private Collection<MessagePrive> messagesPrivesRecus = new ArrayList<MessagePrive>();
 
 	public String creerMembre() {
 		closePanelInscription = false;
-		System.out.println("membre = "+membre);
-		System.out.println("id = "+membre.getId());
 		try {
 			if(!verifierPassword()){
 				throw new MembreException("Les mots de passe ne correspondent pas.");
@@ -74,8 +74,6 @@ public class MembreControlleur extends HttpServlet{
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		} catch (Exception e) {
-			System.out.println("membre = "+membre);
-			System.out.println("id = "+membre.getId());
 			e.printStackTrace();
 		}
 		return null;
@@ -99,9 +97,10 @@ public class MembreControlleur extends HttpServlet{
 		estConnecte = true;
 		closePanelConnexion = true;
 		recupererMessagesPublics();
+		recupererMessagesPerso();
+		recupererMessagesPrivesEmis();
+		recupererMessagesPrivesRecus();
 		listerMembres();
-		System.out.println(listeMembres);
-		//return "connexion";
 		return null;
 	}
 	
@@ -136,20 +135,35 @@ public class MembreControlleur extends HttpServlet{
 		message.setEmetteur(membre);
 		message.setDate(new Date());
 		messagePublicFacade.publierMessagePublic(message);
+		recupererMessagesPerso();
+		recupererMessagesPublics();
 		return null;
 	}
 	
 	public String publierMessagePrive() {
-		MessagePrive message = new MessagePrive();
-		message.setMessage(messagePrive);
-		message.setEmetteur(membre);
-		message.setDate(new Date());
-		messagePriveFacade.envoyerMessagePrive(message);
+		try {
+			MessagePrive message = new MessagePrive();
+			message.setMessage(messagePrive);
+			message.setEmetteur(membre);
+			message.setDestinataire(membreFacade.getByPseudo(destinataireMessagePrive));
+			message.setDate(new Date());
+			messagePriveFacade.envoyerMessagePrive(message);
+			recupererMessagesPrivesEmis();
+			recupererMessagesPrivesRecus();
+		} catch (MembreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
 	public String recupererMessagesPublics() {
 		messagesPublics = messagePublicFacade.getMessagesPublicsFor(membre);
+		return null;
+	}
+	
+	public String recupererMessagesPerso() {
+		messagesPerso = messagePublicFacade.getMessagesPublicsFrom(membre);
 		return null;
 	}
 	
@@ -169,6 +183,9 @@ public class MembreControlleur extends HttpServlet{
 		ajoutSuivi = "";
 		listeMembres = null;
 		messagesPublics = null;
+		messagesPerso = null;
+		messagesPrivesEmis = null;
+		messagesPrivesRecus = null;
 	}
 		
 	private boolean verifierPassword() {
@@ -300,5 +317,21 @@ public class MembreControlleur extends HttpServlet{
 
 	public void setMessagePrive(String messagePrive) {
 		this.messagePrive = messagePrive;
+	}
+
+	public Collection<MessagePublic> getMessagesPerso() {
+		return messagesPerso;
+	}
+
+	public void setMessagesPerso(Collection<MessagePublic> messagesPerso) {
+		this.messagesPerso = messagesPerso;
+	}
+
+	public void setDestinataireMessagePrive(String destinataireMessagePrive) {
+		this.destinataireMessagePrive = destinataireMessagePrive;
+	}
+
+	public String getDestinataireMessagePrive() {
+		return destinataireMessagePrive;
 	}
 }

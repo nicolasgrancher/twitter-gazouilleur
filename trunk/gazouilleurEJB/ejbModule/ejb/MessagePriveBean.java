@@ -2,6 +2,8 @@ package ejb;
 
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -44,6 +46,8 @@ public class MessagePriveBean implements MessagePriveFacade {
 		membre = getEntityMgr().find(Membre.class, membre.getId());
 		Collection<MessagePrive> collection = membre.getMessagesPrivesEmis();
 		collection.size(); // chargement de la collection persistée
+		Collections.sort((List<MessagePrive>) collection);
+		Collections.reverse((List<MessagePrive>) collection);
 		return collection;
 	}
 	
@@ -51,6 +55,8 @@ public class MessagePriveBean implements MessagePriveFacade {
 		membre = getEntityMgr().find(Membre.class, membre.getId());
 		Collection<MessagePrive> collection = membre.getMessagesPrivesRecus();
 		collection.size(); // chargement de la collection persistée
+		Collections.sort((List<MessagePrive>) collection);
+		Collections.reverse((List<MessagePrive>) collection);
 		return collection;
 	}
 	
