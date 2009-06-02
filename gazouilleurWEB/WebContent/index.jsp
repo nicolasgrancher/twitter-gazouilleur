@@ -224,7 +224,9 @@ body {
 					<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"
 						action="#{membreControlleur.publierMessagePublic}"
 						oncomplete="this.form.elements[0].value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"/>
-					<h:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" onclick="this.form.elements[0].value=''" immediate="true"/>	
+					<a4j:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" 
+						onclick="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'" 
+						immediate="true" ajaxSingle="true"/>	
 				</a4j:form>
 				<a4j:region>
 			        <h:form>
