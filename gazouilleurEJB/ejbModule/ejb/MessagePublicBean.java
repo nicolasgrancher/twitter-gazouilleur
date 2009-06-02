@@ -104,6 +104,7 @@ public class MessagePublicBean implements MessagePublicFacade {
 		while(iSuivis.hasNext()) {
 			collection.addAll(getMessagesPublicsFrom(iSuivis.next()));
 		}
+		collection.addAll(getMessagesPublicsFrom(membre)); // le membre voit ses propres messages
 		Collections.sort(collection);
 		Collections.reverse(collection);
 		return collection;
