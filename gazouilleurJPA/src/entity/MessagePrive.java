@@ -1,12 +1,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "message_prive")
-public class MessagePrive implements Serializable {
+public class MessagePrive implements Serializable, Comparable<MessagePrive> {
 	private static final long serialVersionUID = -6299354353606059148L;
 
 	@Id	
@@ -62,6 +63,11 @@ public class MessagePrive implements Serializable {
 		return date;
 	}
 	
+	public String getFormatDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+		return sdf.format(this.getDate());
+	}
+	
 	@Override
 	public int hashCode() {
 		// On choisit les deux nombres impairs
@@ -111,6 +117,10 @@ public class MessagePrive implements Serializable {
 	@Override
 	public String toString() {
 		return date.toString() +"\n"+ emetteur.toString() +" @ "+ destinataire + " :\n " + message;
+	}
+
+	public int compareTo(MessagePrive arg0) {
+		return this.getDate().compareTo(arg0.getDate());
 	}
 	
 }

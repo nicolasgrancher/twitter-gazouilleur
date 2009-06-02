@@ -223,7 +223,8 @@ body {
 						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
 					<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"
 						action="#{membreControlleur.publierMessagePublic}"
-						oncomplete="this.form.elements[0].value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"/>
+						oncomplete="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"
+						reRender="listeMessagesPerso,listeMessagesPublics"/>
 					<a4j:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" 
 						onclick="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'" 
 						immediate="true" ajaxSingle="true"/>	
@@ -238,13 +239,26 @@ body {
 			    </a4j:region>
 		        <rich:spacer height="25px" width="100%"/>
 				
-				<h:panelGroup id="listeMessagesPublics">
-					<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
-						<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.date}" style="margin:10px 10px 10px 10px;">
-						    <h:outputText value="#{messagePublic.message}" />             
-						</rich:simpleTogglePanel>
-					</a4j:repeat>
-				</h:panelGroup>
+				<rich:tabPanel switchType="client" id="tabPanelMessagesPublics">
+					<rich:tab label="Tous" id="tabMessagesPublicsTous">
+						<h:panelGroup id="listeMessagesPublics">
+							<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
+								<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.formatDate}" style="margin:10px 10px 10px 10px;">
+								    <h:outputText value="#{messagePublic.message}" />             
+								</rich:simpleTogglePanel>
+							</a4j:repeat>
+						</h:panelGroup>
+					</rich:tab>
+					<rich:tab label="Moi" id="tabMessagesPublicsMoi">
+						<h:panelGroup id="listeMessagesPerso">
+							<a4j:repeat value="#{membreControlleur.messagesPerso}" var="messagePerso">
+								<rich:simpleTogglePanel switchType="client" label="#{messagePerso.emetteur.pseudo} - #{messagePerso.formatDate}" style="margin:10px 10px 10px 10px;">
+								    <h:outputText value="#{messagePerso.message}" />             
+								</rich:simpleTogglePanel>
+							</a4j:repeat>
+						</h:panelGroup>
+					</rich:tab>
+				</rich:tabPanel>
 	        </rich:tab>
 	    <!-- Fin onglet principal -->
 	    
@@ -275,7 +289,7 @@ body {
 			            <a4j:poll id="pollSuivis" interval="5000"
 			            	enabled="#{membreControlleur.suivisPollEnabled}"
 			            	action="#{membreControlleur.listerMembres}"
-			                reRender="pollSuivis,suiveursTable" />
+			                reRender="pollSuivis,suiveursTable,ajoutSuivi,destinataireMessagePrive" />
 			        </h:form>
 			    </a4j:region>
 			    
@@ -283,7 +297,7 @@ body {
 				
 			<!-- Debut liste des suivis -->
 				
-				<!-- Debut menu conextuel des suivis -->
+				<!-- Debut menu contextuel des suivis -->
 				<a4j:form>
 					<rich:contextMenu attached="false" id="suivisMenu" submitMode="ajax">
 						<rich:menuItem>
@@ -294,7 +308,7 @@ body {
 						</rich:menuItem>
 					</rich:contextMenu>
 				</a4j:form>
-				<!-- Fin menu conextuel des suivis -->
+				<!-- Fin menu contextuel des suivis -->
 				
 				<h:panelGrid columns="2" style="width:100%;">
 				
@@ -350,11 +364,60 @@ body {
 	        </rich:tab>
 	        <!-- Fin onglet suiveurs -->
 	        
+	        <!-- Debut onglet messages prives -->
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
-	        	
-	        </rich:tab>
-	        <rich:tab label="Variables" id="tabVariables">
-	        	<!-- a4j:include viewId="/variables.jsp" / -->
+	        	<rich:spacer height="15px" width="100%"/>
+				<a4j:form id="messagesPrivesForm" style="text-align:center;">
+					<h:outputText value="140" id="nbCarMessagesPrives" /><h:outputText value=" caractères restants" />
+					<h:inputTextarea id="messagesPrivesTextArea" style=" width : 95%;" 
+						value="#{membreControlleur.messagePrive}"
+						onkeyup="document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = (140 - this.textLength);" 
+						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
+					<h:outputLabel value="Envoyer a" for="destinataireMessagePrive" />
+				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
+				    	suggestionValues="#{membreControlleur.listeMembres}"
+				    	directInputSuggestions="true" >
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
+				    </rich:comboBox> 
+					<a4j:commandButton id="messagesPrivesBoutonEnvoyer" value="Envoyer" style="margin:5px;"
+						action="#{membreControlleur.publierMessagePrive}"
+						oncomplete="document.getElementById('messagesPrivesForm:messagesPrivesTextArea').value='';document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = '140'"
+						reRender="listeMessagesPrivesRecus,listeMessagesPrivesEmis"/>
+					<a4j:commandButton id="messagesPrivesBoutonEffacer" value="Effacer" style="margin:5px;" 
+						onclick="document.getElementById('messagesPrivesForm:messagesPrivesTextArea').value='';document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = '140'" 
+						immediate="true" ajaxSingle="true"/>	
+				</a4j:form>
+				<a4j:region>
+			        <h:form>
+			            <a4j:poll id="pollMessagesPrivesRecus" interval="5000"
+			            	enabled="#{membreControlleur.estConnecte == true}"
+			                action="#{membreControlleur.recupererMessagesPrivesRecus}" 
+			                reRender="pollMessagesPrivesRecus,listeMessagesPrivesRecus" />
+			        </h:form>
+			    </a4j:region>
+		        <rich:spacer height="25px" width="100%"/>
+				
+				<rich:tabPanel switchType="client" id="tabPanelMessagesPrives">
+					<rich:tab label="Recus" id="tabMessagesPrivesRecus">
+						<h:panelGroup id="listeMessagesPrivesRecus">
+							<a4j:repeat value="#{membreControlleur.messagesPrivesRecus}" var="messagePriveRecu">
+								<rich:simpleTogglePanel switchType="client" label="#{messagePriveRecu.emetteur.pseudo} - #{messagePriveRecu.formatDate}" style="margin:10px 10px 10px 10px;">
+								    <h:outputText value="#{messagePriveRecu.message}" />             
+								</rich:simpleTogglePanel>
+							</a4j:repeat>
+						</h:panelGroup>
+					</rich:tab>
+					<rich:tab label="Emis" id="tabMessagesPrivesEmis">
+						<h:panelGroup id="listeMessagesPrivesEmis">
+							<a4j:repeat value="#{membreControlleur.messagesPrivesEmis}" var="messagePriveEmis">
+								<rich:simpleTogglePanel switchType="client" label="#{messagePriveEmis.destinataire.pseudo} - #{messagePriveEmis.formatDate}" style="margin:10px 10px 10px 10px;">
+								    <h:outputText value="#{messagePriveEmis.message}" />             
+								</rich:simpleTogglePanel>
+							</a4j:repeat>
+						</h:panelGroup>
+					</rich:tab>
+				</rich:tabPanel>
 	        </rich:tab>
 	    </rich:tabPanel>
     </center>

@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -47,6 +48,12 @@ public class MessagePublic implements Serializable, Comparable<MessagePublic> {
 	public Date getDate() {
 		return date;
 	}
+	
+	public String getFormatDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+		return sdf.format(this.getDate());
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

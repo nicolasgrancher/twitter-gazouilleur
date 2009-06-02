@@ -1,5 +1,6 @@
 package ejb;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -93,6 +94,8 @@ public class MessagePublicBean implements MessagePublicFacade {
 		membre = getEntityMgr().find(Membre.class, membre.getId());
 		Collection<MessagePublic> collection = membre.getMessagesPublics();
 		collection.size(); // chargement de la collection persistée
+		Collections.sort((List<MessagePublic>) collection);
+		Collections.reverse((List<MessagePublic>) collection);
 		return collection;
 	}
 	
