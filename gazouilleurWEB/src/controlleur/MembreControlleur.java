@@ -1,6 +1,8 @@
 package controlleur;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -17,7 +19,11 @@ import com.sun.corba.se.spi.protocol.RequestDispatcherRegistry;
 import com.sun.tools.ws.processor.model.Request;
 
 import ejb.MembreFacade;
+import ejb.MessagePriveFacade;
+import ejb.MessagePublicFacade;
 import entity.Membre;
+import entity.MessagePrive;
+import entity.MessagePublic;
 import exception.MembreException;
 
 public class MembreControlleur extends HttpServlet{
@@ -30,18 +36,28 @@ public class MembreControlleur extends HttpServlet{
 	@EJB
 	private static MembreFacade membreFacade;
 	
+	@EJB
+	private static MessagePublicFacade messagePublicFacade;
+	
+	@EJB
+	private static MessagePriveFacade messagePriveFacade;
+	
 	private Membre membre = new Membre();
 	private boolean estConnecte;
 	
 	private String password2;
 	private String messagePublic;
+	private String messagePrive;
 	private String ajoutSuivi;
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
 	private boolean suivisPollEnabled = false;
 
-	private Collection<Membre> listeMembres;
+	private Collection<Membre> listeMembres = new ArrayList<Membre>();
+	private Collection<MessagePublic> messagesPublics = new ArrayList<MessagePublic>();
+	private Collection<MessagePrive> messagesPrivesEmis = new ArrayList<MessagePrive>();
+	private Collection<MessagePrive> messagesPrivesRecus = new ArrayList<MessagePrive>();
 
 	public String creerMembre() {
 		closePanelInscription = false;
@@ -54,6 +70,7 @@ public class MembreControlleur extends HttpServlet{
 			membre = membreFacade.creerMembre(membre);
 			closePanelInscription = true;
 			estConnecte = true;
+			listerMembres();
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		} catch (Exception e) {
@@ -67,6 +84,7 @@ public class MembreControlleur extends HttpServlet{
 	public String deconnexion(){
 		membre = new Membre();
 		estConnecte = false;
+		initVar();
 		return "deconnexion";
 	}
 	
@@ -80,6 +98,9 @@ public class MembreControlleur extends HttpServlet{
 		}
 		estConnecte = true;
 		closePanelConnexion = true;
+		recupererMessagesPublics();
+		listerMembres();
+		System.out.println(listeMembres);
 		//return "connexion";
 		return null;
 	}
@@ -88,6 +109,7 @@ public class MembreControlleur extends HttpServlet{
 		try {
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.ajouterAmi(membre, ami);
+			recupererMessagesPublics();
 		} catch (MembreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,6 +121,7 @@ public class MembreControlleur extends HttpServlet{
 		try {
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.supprimerAmi(membre, ami);
+			recupererMessagesPublics();
 		} catch (MembreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,9 +129,55 @@ public class MembreControlleur extends HttpServlet{
 		return null;
 		
 	}
+	
+	public String publierMessagePublic() {
+		MessagePublic message = new MessagePublic();
+		message.setMessage(messagePublic);
+		message.setEmetteur(membre);
+		message.setDate(new Date());
+		messagePublicFacade.publierMessagePublic(message);
+		return null;
+	}
+	
+	public String publierMessagePrive() {
+		MessagePrive message = new MessagePrive();
+		message.setMessage(messagePrive);
+		message.setEmetteur(membre);
+		message.setDate(new Date());
+		messagePriveFacade.envoyerMessagePrive(message);
+		return null;
+	}
+	
+	public String recupererMessagesPublics() {
+		messagesPublics = messagePublicFacade.getMessagesPublicsFor(membre);
+		return null;
+	}
+	
+	public String recupererMessagesPrivesEmis() {
+		messagesPrivesEmis = messagePriveFacade.getMessagesPrivesEmis(membre);
+		return null;
+	}
+	
+	public String recupererMessagesPrivesRecus() {
+		messagesPrivesRecus = messagePriveFacade.getMessagesPrivesRecus(membre);
+		return null;
+	}
+	
+	private void initVar() {
+		password2 = "";
+		messagePublic = "";
+		ajoutSuivi = "";
+		listeMembres = null;
+		messagesPublics = null;
+	}
 		
 	private boolean verifierPassword() {
 		return password2.equals(membre.getPassword());
+	}
+	
+	public String listerMembres() {
+		listeMembres = membreFacade.rechercheTous();
+		return null;
 	}
 
 	public Membre getMembre() {
@@ -191,5 +260,45 @@ public class MembreControlleur extends HttpServlet{
 
 	public String getAjoutSuivi() {
 		return ajoutSuivi;
+	}
+
+	public Collection<MessagePublic> getMessagesPublics() {
+		return messagesPublics;
+	}
+
+	public void setMessagesPublics(Collection<MessagePublic> messagesPublics) {
+		this.messagesPublics = messagesPublics;
+	}
+
+	public Collection<MessagePrive> getMessagesPrivesEmis() {
+		return messagesPrivesEmis;
+	}
+
+	public void setMessagesPrivesEmis(Collection<MessagePrive> messagesPrives) {
+		this.messagesPrivesEmis = messagesPrives;
+	}
+	
+	public Collection<MessagePrive> getMessagesPrivesRecus() {
+		return messagesPrivesRecus;
+	}
+
+	public void setMessagesPrivesRecus(Collection<MessagePrive> messagesPrives) {
+		this.messagesPrivesRecus = messagesPrives;
+	}
+
+	public static void setMessagePriveFacade(MessagePriveFacade messagePriveFacade) {
+		MembreControlleur.messagePriveFacade = messagePriveFacade;
+	}
+
+	public static MessagePriveFacade getMessagePriveFacade() {
+		return messagePriveFacade;
+	}
+
+	public String getMessagePrive() {
+		return messagePrive;
+	}
+
+	public void setMessagePrive(String messagePrive) {
+		this.messagePrive = messagePrive;
 	}
 }
