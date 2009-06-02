@@ -111,5 +111,10 @@ public interface MembreFacade {
 	 * @return
 	 */
 	public Collection <Membre> rechercheByEmail(String email);
+	
+	/**
+	 * Recherche tous les inscrits
+	 */
+	public Collection<Membre> rechercheTous();
 
 }

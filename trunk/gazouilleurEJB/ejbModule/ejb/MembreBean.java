@@ -38,6 +38,7 @@ public class MembreBean implements MembreFacade {
 	public Membre getByPseudo(String pseudo) throws MembreException {
 		Query q = entityMgr.createNamedQuery("findByPseudoExact");
 		try{
+			System.out.println("*"+pseudo+"*");
 			Membre membre = (Membre)q.setParameter(1, pseudo).getSingleResult();
 			return membre;
 		} catch(NoResultException e){
@@ -211,6 +212,21 @@ public class MembreBean implements MembreFacade {
 			ArrayList<Membre> membres= (ArrayList<Membre>) q.setParameter(1, email).getResultList();
 			return membres;
 		} catch(NoResultException e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Lister tous les membres inscrits
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Membre> rechercheTous() {
+		try {
+			Query q = entityMgr.createNamedQuery("findAll");
+			ArrayList<Membre> membres = (ArrayList<Membre>) q.getResultList();
+			Collections.sort(membres);
+			return membres;
+		} catch (NoResultException e) {
 			return null;
 		}
 	}

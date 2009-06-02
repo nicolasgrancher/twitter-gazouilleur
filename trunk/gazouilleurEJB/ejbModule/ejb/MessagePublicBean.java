@@ -1,6 +1,10 @@
 package ejb;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -35,7 +39,7 @@ public class MessagePublicBean implements MessagePublicFacade {
 	private Topic destinationMsgPublic;
 	private Connection connection;
 	
-	// Méthodes appelées avant et après postage
+	// Mï¿½thodes appelï¿½es avant et aprï¿½s postage
 	@PostConstruct
     public void openConnection() {
         try {
@@ -92,6 +96,19 @@ public class MessagePublicBean implements MessagePublicFacade {
 		return collection;
 	}
 	
+	public Collection<MessagePublic> getMessagesPublicsFor(Membre membre){
+		membre = getEntityMgr().find(Membre.class, membre.getId());
+		Collection<Membre> suivis = membre.getListSuivis();
+		Iterator<Membre> iSuivis = suivis.iterator();
+		List<MessagePublic> collection = new ArrayList<MessagePublic>();
+		while(iSuivis.hasNext()) {
+			collection.addAll(getMessagesPublicsFrom(iSuivis.next()));
+		}
+		Collections.sort(collection);
+		Collections.reverse(collection);
+		return collection;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Collection<MessagePublic> rechercheMessagesPublics(Collection<String> motsCles){
 		try {
@@ -127,7 +144,7 @@ public class MessagePublicBean implements MessagePublicFacade {
             
             // Add in header ??
             Membre emetteur = msgPublic.getEmetteur();
-            objectMessage.setIntProperty("émetteur : ", emetteur.getId());
+            objectMessage.setIntProperty("ï¿½metteur : ", emetteur.getId());
             
             objectMessage.setObject(msgPublic);
 			
