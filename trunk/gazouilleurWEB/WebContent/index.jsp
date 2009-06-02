@@ -29,6 +29,7 @@ corps de la page
 		ajout d'un suivi
 		liste des suivis
 		liste des suiveurs
+		poll d'actualisation de la liste des suiveurs
 	-- onglets manquants --
 
 popup d'expiration de session
@@ -215,22 +216,33 @@ body {
 	        <rich:tab label="Home" id="tabHome">
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="message_form" style="text-align:center;">
-					<h:inputTextarea id="message_text_area" style=" width : 95%;" />
-					<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"/>
+					<h:outputText value="140" id="nbCarMessage" /><h:outputText value=" caractères restants" />
+					<h:inputTextarea id="message_text_area" style=" width : 95%;" 
+						value="#{membreControlleur.messagePublic}"
+						onkeyup="document.getElementById('message_form:nbCarMessage').innerHTML = (140 - this.textLength);" 
+						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
+					<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"
+						action="#{membreControlleur.publierMessagePublic}"
+						oncomplete="this.form.elements[0].value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"/>
 					<h:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" onclick="this.form.elements[0].value=''" immediate="true"/>	
 				</a4j:form>
+				<a4j:region>
+			        <h:form>
+			            <a4j:poll id="poll" interval="5000"
+			            	enabled="#{membreControlleur.estConnecte == true}"
+			                action="#{membreControlleur.recupererMessagesPublics}" 
+			                reRender="poll,listeMessagesPublics" />
+			        </h:form>
+			    </a4j:region>
 		        <rich:spacer height="25px" width="100%"/>
-		
-				<%
-					for(int i=0; i<6; i++){
-						//voir a4j:repeat
-					%>
-				<rich:simpleTogglePanel switchType="client" label="Pseudo - date" style="margin:10px 10px 10px 10px;">
-				    140 characteres             
-				</rich:simpleTogglePanel>
-					<%
-					}
-				%>
+				
+				<h:panelGroup id="listeMessagesPublics">
+					<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
+						<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.date}" style="margin:10px 10px 10px 10px;">
+						    <h:outputText value="#{messagePublic.message}" />             
+						</rich:simpleTogglePanel>
+					</a4j:repeat>
+				</h:panelGroup>
 	        </rich:tab>
 	    <!-- Fin onglet principal -->
 	    
@@ -243,29 +255,46 @@ body {
 		
 			<!-- Debut ajout d'un suivi -->
 				<a4j:form>
-				    <h:outputLabel id="ajoutSuiviLabel" for="ajoutSuivi" value="Suivez un ami" />
-				     	<h:inputText id="ajoutSuivi" value="#{membreControlleur.ajoutSuivi}" />
+			    	<h:outputLabel id="ajoutSuiviLabel" for="ajoutSuivi" value="Suivez un ami" />
+				    <rich:comboBox id="ajoutSuivi" value="#{membreControlleur.ajoutSuivi}"
+				    	suggestionValues="#{membreControlleur.listeMembres}"
+				    	directInputSuggestions="true" >
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
+				    </rich:comboBox> 
 				   	<a4j:commandButton action="#{membreControlleur.ajouterAmi}" value="Suivre" 
 				   		reRender="suivisTable"/>
 				</a4j:form>
-			<!-- Fin ajout d'un suivi -->	
+			<!-- Fin ajout d'un suivi -->
+			
+			<!-- Debut poll d'actualisation de la liste des membre -->
+				<a4j:region>
+			        <h:form>
+			            <a4j:poll id="pollSuivis" interval="5000"
+			            	enabled="#{membreControlleur.suivisPollEnabled}"
+			            	action="#{membreControlleur.listerMembres}"
+			                reRender="pollSuivis,suiveursTable" />
+			        </h:form>
+			    </a4j:region>
+			    
+			    <!-- Fin poll d'actualisation de la liste des membres -->
 				
 			<!-- Debut liste des suivis -->
-			
-				<h:panelGrid columns="2" style="width:100%;">
 				
-				<!-- Debut menu conextuel des usivis -->
-					<a4j:form>
-						<rich:contextMenu attached="false" id="suivisMenu" submitMode="ajax">
-							<rich:menuItem>
-								Ne plus suivre {pseudo}
-								<a4j:actionparam assignTo="#{membreControlleur.ajoutSuivi}" value="{pseudo}" />
-								<a4j:support action="#{membreControlleur.supprimerAmi}" event="oncomplete"
-									reRender="suivisTable" requestDelay="500"/>
-							</rich:menuItem>
-						</rich:contextMenu>
-					</a4j:form>
+				<!-- Debut menu conextuel des suivis -->
+				<a4j:form>
+					<rich:contextMenu attached="false" id="suivisMenu" submitMode="ajax">
+						<rich:menuItem>
+							Ne plus suivre {pseudo}
+							<a4j:actionparam assignTo="#{membreControlleur.ajoutSuivi}" value="{pseudo}" />
+							<a4j:support action="#{membreControlleur.supprimerAmi}" event="oncomplete"
+								reRender="suivisTable" requestDelay="500"/>
+						</rich:menuItem>
+					</rich:contextMenu>
+				</a4j:form>
 				<!-- Fin menu conextuel des suivis -->
+				
+				<h:panelGrid columns="2" style="width:100%;">
 				
 				<!-- Debut liste des suivis -->
 					<rich:dataTable id="suivisTable" value="#{membreControlleur.membre.listSuivis}"
@@ -303,12 +332,24 @@ body {
 				<!-- fin liste des suiveurs -->
 				
 				</h:panelGrid>
+				
+				<!-- Debut poll d'actualisation de la liste des suiveurs -->
+				<a4j:region>
+			        <h:form>
+			            <a4j:poll id="pollSuiveurs" interval="5000"
+			            	enabled="false"
+			                reRender="pollSuiveurs,suiveursTable" />
+			        </h:form>
+			    </a4j:region>
+			    
+			    <!-- Fin poll d'actualisation de la liste des suiveurs -->
+			    
 			</center>
 	        </rich:tab>
 	        <!-- Fin onglet suiveurs -->
 	        
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
-	        	<!--  4j:include viewId="/messages.jsp" / -->
+	        	
 	        </rich:tab>
 	        <rich:tab label="Variables" id="tabVariables">
 	        	<!-- a4j:include viewId="/variables.jsp" / -->
@@ -334,7 +375,7 @@ body {
     <!-- Debut poll de gestion d'expiration de session -->
     <a4j:region>
     	<a4j:form>
-    		<a4j:poll id="sessioncheck" interval="86400000" reRender="sessioncheck" />
+    		<a4j:poll id="sessioncheck" interval="86400000" reRender="sessioncheck" enabled="false"/>
     	</a4j:form>
     	<script type="text/javascript">
     		A4J.AJAX.onExpired = function(loc,expiredMsg){
