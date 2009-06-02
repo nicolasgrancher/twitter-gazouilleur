@@ -14,35 +14,48 @@ import entity.MessagePrive;
 public class MessagePriveBean implements MessagePriveFacade {
 	
 	@PersistenceContext(unitName = "gazouilleurJPA")
-	protected EntityManager manager;
+	protected EntityManager entityMgr;
 	
+	public EntityManager getEntityMgr() {
+		return entityMgr;
+	}
+
+	public void setEntityMgr(EntityManager entityMgr) {
+		this.entityMgr = entityMgr;
+	}
+
 	public MessagePrive getById(int id) {
-		// TODO méthode à compléter
-		return null;
+		return (MessagePrive) getEntityMgr().find(MessagePrive.class, id);
 	}
     	
 	public MessagePrive envoyerMessagePrive(MessagePrive message) {
-		// TODO méthode à compléter
-		return null;
+		try{
+			/*getEntityMgr().merge(message.getEmetteur());
+			getEntityMgr().merge(message.getDestinataire());*/
+			getEntityMgr().persist(message);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return message;
 	}
 	
-	public Collection<MessagePrive> getMessagesPrives(Membre membre){
-		// TODO méthode à compléter
-		return null;
+	public Collection<MessagePrive> getMessagesPrivesEmis(Membre membre){
+		membre = getEntityMgr().find(Membre.class, membre.getId());
+		Collection<MessagePrive> collection = membre.getMessagesPrivesEmis();
+		collection.size(); // chargement de la collection persistÃ©e
+		return collection;
 	}
 	
-	public Collection<MessagePrive> getMessagesPrivesNonLus(Membre membre){
-		// TODO méthode à compléter
-		return null;
+	public Collection<MessagePrive> getMessagesPrivesRecus(Membre membre){
+		membre = getEntityMgr().find(Membre.class, membre.getId());
+		Collection<MessagePrive> collection = membre.getMessagesPrivesRecus();
+		collection.size(); // chargement de la collection persistÃ©e
+		return collection;
 	}
 	
-	public Collection<MessagePrive> getMessagesPrivesLus(Membre membre){
-		// TODO méthode à compléter
-		return null;
-	}
-	
-	public MessagePrive supprimerMessagePrive(MessagePrive message) {
-		// TODO méthode à compléter
-		return null;
+	public void supprimerMessagePrive(MessagePrive message) {
+		message = entityMgr.merge(message);
+		entityMgr.remove(message);
 	}
  }

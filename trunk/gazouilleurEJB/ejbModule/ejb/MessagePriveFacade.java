@@ -20,30 +20,22 @@ public interface MessagePriveFacade {
 	public MessagePrive envoyerMessagePrive(MessagePrive message);
 	
 	/**
-	 * R�cup�re tous les messages privés d'un membre
+	 * Récupère tous les messages privés émis d'un membre
 	 * @param membre
 	 * @return
 	 */
-	public Collection<MessagePrive> getMessagesPrives(Membre membre);
+	public Collection<MessagePrive> getMessagesPrivesEmis(Membre membre);
 	
 	/**
-	 * Récupère tous les messages privés non lus d'un membre
+	 * Récupère tous les messages privés reçus d'un membre
 	 * @param membre
 	 * @return
 	 */
-	public Collection<MessagePrive> getMessagesPrivesNonLus(Membre membre);
-	
-	/**
-	 * Récupère tous les messages privés lus d'un membre
-	 * @param membre
-	 * @return
-	 */
-	public Collection<MessagePrive> getMessagesPrivesLus(Membre membre);
+	public Collection<MessagePrive> getMessagesPrivesRecus(Membre membre);
 	
 	/**
 	 * Supprime un message privé
 	 * @param message
-	 * @return
 	 */
-	public MessagePrive supprimerMessagePrive(MessagePrive message);
+	public void supprimerMessagePrive(MessagePrive message);
 }
