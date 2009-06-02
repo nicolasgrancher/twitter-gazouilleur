@@ -45,11 +45,10 @@ public class Membre implements Serializable {
 	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
 	private List<MessagePublic> messagesPublics;
 	
-	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
+	@OneToMany(mappedBy="destinataire", cascade = {CascadeType.REMOVE})
 	private List<MessagePrive> messagesPrivesRecus;
 	
 	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
-	@JoinColumn(name="emetteur")
 	private List<MessagePrive> messagesPrivesEmis;
 	
 	@ManyToMany(cascade = {CascadeType.REMOVE})

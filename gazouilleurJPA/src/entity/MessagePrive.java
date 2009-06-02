@@ -16,11 +16,11 @@ public class MessagePrive implements Serializable {
 	private String message;
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="emetteur")
 	private Membre emetteur;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="destinataire")
 	private Membre destinataire;
 	
