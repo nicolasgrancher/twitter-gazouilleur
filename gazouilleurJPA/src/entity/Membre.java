@@ -19,7 +19,7 @@ import org.hibernate.validator.NotEmpty;
 	@NamedQuery(name="findByPseudoAndPassword", query="Select m FROM Membre m WHERE m.pseudo = ?1 AND m.password = ?2"),
 })
 @Table(name = "membre", uniqueConstraints = {@UniqueConstraint(columnNames={"pseudo"})})
-public class Membre implements Serializable {
+public class Membre implements Serializable, Comparable<Membre> {
 	private static final long serialVersionUID = -3343648899161328469L;
 
 	@Id
@@ -180,7 +180,7 @@ public class Membre implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return getPseudo() + " (" + getPrenom()+ " " + getNom() + ")";
+		return getPseudo();
 	}
 	
 	//Methodes M�tiers
@@ -210,5 +210,9 @@ public class Membre implements Serializable {
 			membre.supprimerSuivi(this);
 			this.getListSuiveurs().remove(membre);
 		}
+	}
+
+	public int compareTo(Membre o) {
+		return this.pseudo.compareTo(o.getPseudo());
 	}
 }

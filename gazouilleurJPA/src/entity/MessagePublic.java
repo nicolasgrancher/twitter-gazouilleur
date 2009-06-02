@@ -1,13 +1,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "message_public")
-public class MessagePublic implements Serializable {
+public class MessagePublic implements Serializable, Comparable<MessagePublic> {
 	private static final long serialVersionUID = 1300826293782127962L;
 
 	@Id
@@ -85,6 +86,12 @@ public class MessagePublic implements Serializable {
 	@Override
 	public String toString() {
 		return date.toString() + emetteur.toString() + ": " + message;
+	}
+	
+	public int compareTo(MessagePublic arg0) {
+		Date date1 = ((MessagePublic)arg0).getDate();
+		Date date2 = this.getDate();
+		return date2.compareTo(date1);
 	}
 	
 }
