@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 public class TestMessagePublicBean extends TestCase  {
 	private Context annuaire;
 	private Membre emetteur;
+	private Membre suiveur;
 	
 	protected void setUp() throws Exception {
 		annuaire = new InitialContext();
@@ -35,6 +36,16 @@ public class TestMessagePublicBean extends TestCase  {
 		emetteur.setPassword("12345678");
 		emetteur.setEmail("jean@test.com");
 		emetteur = facadeMembre.creerMembre(emetteur);
+		
+		suiveur = new Membre();
+		suiveur.setPseudo("Test");
+		suiveur.setNom("Durand");
+		suiveur.setPrenom("Pierre");
+		suiveur.setPassword("12345678");
+		suiveur.setEmail("pierre@test.com");
+		suiveur = facadeMembre.creerMembre(suiveur);
+		
+		suiveur.ajouterSuivi(emetteur);
 	}
 	
 	protected void tearDown() throws Exception {
@@ -95,6 +106,14 @@ public class TestMessagePublicBean extends TestCase  {
 		MessagePublicFacade facade = (MessagePublicFacade) annuaire.lookup("MessagePublicBean");
 		
 		Collection<MessagePublic> messages = facade.getMessagesPublicsFrom(emetteur);
+		
+		assertNotNull(messages);
+	}
+	
+	public void testGetMessagesPublicsFor() throws NamingException {
+		MessagePublicFacade facade = (MessagePublicFacade)annuaire.lookup("MessagePublicBean");
+		
+		Collection<MessagePublic> messages = facade.getMessagesPublicsFor(suiveur);
 		
 		assertNotNull(messages);
 	}
