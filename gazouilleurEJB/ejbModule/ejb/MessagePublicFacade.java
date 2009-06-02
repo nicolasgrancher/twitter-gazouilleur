@@ -30,6 +30,7 @@ public interface MessagePublicFacade {
 	 */
 	public Collection<MessagePublic> getMessagesPublicsFrom(Membre membre);
 	
+	public Collection<MessagePublic> getMessagesPublicsFor(Membre membre);
 	/**
 	 * Recherche message public
 	 * @param membres
