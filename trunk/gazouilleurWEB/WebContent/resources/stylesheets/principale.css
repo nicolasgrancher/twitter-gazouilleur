@@ -1,4 +1,39 @@
 .message {
-	font-size:60px;
-	font-style: none;
+	/*font-size:60px;
+	font-style: none;*/
+}
+
+.rich-tabhdr-cell-active{
+	font-size: 20px;
+}
+.rich-tabpanel-content{
+	height: 100%;
+}
+
+#tabPanelMessagesPrives table,
+#tabPanelMessagesPublics table {
+	margin: auto;
+}
+
+#tabPanelMessagesPrives .dr-tbpnl-tb,
+#tabPanelMessagesPublics .dr-tbpnl-tb {
+	background: none;
+	background-color: white;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+#tabPanelMessagesPrives .rich-tab-inactive,
+#tabPanelMessagesPublics .rich-tab-inactive {
+	background-color: #E6E6E6;
+}
+
+#tabPanelMessagesPrives .rich-tabpanel-content,
+#tabPanelMessagesPublics .rich-tabpanel-content {
+	border: none;
+}
+
+.dr-tbpnl-tb-sel{
+	cursor: pointer;
+	border-color: silver;
 }

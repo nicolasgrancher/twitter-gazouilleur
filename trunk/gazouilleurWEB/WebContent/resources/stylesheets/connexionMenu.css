@@ -2,7 +2,9 @@
 	position: absolute;
 	right: 0;
 	top:0;
-	background-color: White;
+	background-color: white;
+	padding: 10px;
+	line-height: 1.5em;
 }
 
 #connexionMenu span {

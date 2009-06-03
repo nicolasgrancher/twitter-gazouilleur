@@ -1,4 +1,7 @@
 *{margin:0;padding:0;border-width:0;border-color:transparent;}
+html, body{
+	height: 100%;
+}
 a{text-decoration:none;color:#0084b4;}
 a:hover{text-decoration:underline;}
 #trends_link img{background-color:#0084b4;}
@@ -6,7 +9,7 @@ ul{list-style:none;}
 ul.dot li:before{content:"\00B7 \0020";}
 hr{display:none;}
 input[type="text"],input[type="password"],select,textarea{border:1px solid #aaa;}
-body{text-align:center;font:.75em 'Lucida Grande',sans-serif;color:#333;}
+body{font:.75em 'Lucida Grande',sans-serif;color:#333;}
 #container{width:763px;margin:1.25em auto;text-align:left;position:relative;}
 #loader{position:absolute;top:.7em;right:-25px;padding:0;background-color:#FFF;border:1px solid #CCC;font-size:10px;line-height:0;z-index:999;}
 #header{height:auto;margin:0;text-align:left;}
