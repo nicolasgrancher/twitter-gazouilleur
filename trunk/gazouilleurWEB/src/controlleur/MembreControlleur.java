@@ -47,6 +47,10 @@ public class MembreControlleur extends HttpServlet{
 	private boolean closePanelConnexion = false;
 	private boolean closePanelModifInfo = false;
 	private boolean suivisPollEnabled = true;
+	
+	private boolean ongletHomeActif = false;
+	private boolean ongletSuiveurActif = false;
+	private boolean ongletMessageActif = false;
 
 	private Collection<Membre> listeMembres = new ArrayList<Membre>();
 	private Collection<MessagePublic> messagesPublics = new ArrayList<MessagePublic>();
@@ -68,6 +72,9 @@ public class MembreControlleur extends HttpServlet{
 			membre = membreFacade.creerMembre(membre);
 			closePanelInscription = true;
 			estConnecte = true;
+			ongletHomeActif = true;
+			ongletMessageActif = false;
+			ongletSuiveurActif = false;
 			listerMembres();
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -117,6 +124,9 @@ public class MembreControlleur extends HttpServlet{
 		estConnecte = true;
 		suivisPollEnabled = true;
 		closePanelConnexion = true;
+		ongletHomeActif = true;
+		ongletMessageActif = false;
+		ongletSuiveurActif = false;
 		recupererMessagesPublics();
 		recupererMessagesPerso();
 		recupererMessagesPrivesEmis();
@@ -197,6 +207,7 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String recupererMessagesPublics() {
 		messagesPublics = messagePublicFacade.getMessagesPublicsFor(membre);
+		System.out.println("Recupere message public");
 		return null;
 	}
 	
@@ -212,6 +223,7 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String recupererMessagesPrivesRecus() {
 		messagesPrivesRecus = messagePriveFacade.getMessagesPrivesRecus(membre);
+		System.out.println("Recupere message prive");
 		return null;
 	}
 	
@@ -224,6 +236,9 @@ public class MembreControlleur extends HttpServlet{
 		messagesPerso = null;
 		messagesPrivesEmis = null;
 		messagesPrivesRecus = null;
+		ongletHomeActif = false;
+		ongletMessageActif = false;
+		ongletSuiveurActif = false;
 	}
 		
 	private boolean verifierPassword() {
@@ -232,12 +247,13 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String listerMembres() {
 		listeMembres = membreFacade.rechercheTous(membre);
+		System.out.println("Lister membre");
 		return null;
 	}
 	
 	public String listerSuiveurs() {
 		membre = membreFacade.rafraichirMembre(membre);
-		//System.out.println("suiveur poll");
+		System.out.println("Lister suiveur");
 		return null;
 	}
 
@@ -399,6 +415,54 @@ public class MembreControlleur extends HttpServlet{
 	public String rechercherMessages() {
 		messagePublicFacade.rechercheMessagesPublics(getMotsClesRecherche());
 		return null;
+	}
+
+	public void setOngletHomeActif(boolean ongletHomeActif) {
+		this.ongletHomeActif = ongletHomeActif;
+	}
+	
+	public void setOngletHomeActifToTrue() {
+		this.ongletHomeActif = true;
+	}
+	
+	public void setOngletHomeActifToFalse() {
+		this.ongletHomeActif = false;
+	}
+
+	public boolean isOngletHomeActif() {
+		return ongletHomeActif;
+	}
+
+	public void setOngletSuiveurActif(boolean ongletSuiveurActif) {
+		this.ongletSuiveurActif = ongletSuiveurActif;
+	}
+	
+	public void setOngletSuiveurActifToTrue() {
+		this.ongletSuiveurActif = true;
+	}
+	
+	public void setOngletSuiveurActifToFalse() {
+		this.ongletSuiveurActif = false;
+	}
+
+	public boolean isOngletSuiveurActif() {
+		return ongletSuiveurActif;
+	}
+
+	public void setOngletMessageActif(boolean ongletMessageActif) {
+		this.ongletMessageActif = ongletMessageActif;
+	}
+	
+	public void setOngletMessageActifToTrue() {
+		this.ongletMessageActif = true;
+	}
+	
+	public void setOngletMessageActifToFalse() {
+		this.ongletMessageActif = false;
+	}
+
+	public boolean isOngletMessageActif() {
+		return ongletMessageActif;
 	}
 
 }
