@@ -15,11 +15,9 @@ import entity.MessagePublic;
 @MessageDriven(mappedName = "topic/MsgPublicTopic", activationConfig = {
 	@ActivationConfigProperty(propertyName="destination",propertyValue="topic/MsgPublicTopic"),
 	@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
-	
-	
 })
 //@ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable")
-public class MsgPublicMDB implements MessageListener {
+public class MessagePublicMDB implements MessageListener {
 	
 	@Override
 	public void onMessage(Message message) {
@@ -40,7 +38,7 @@ public class MsgPublicMDB implements MessageListener {
 	
 	private void sendEMail(MessagePublic messagePublic) throws MessagingException {
 		// Envoyer un message à tous les suiveurs de l'emetteur (present dans le header du message reçus)
-	
+		
 	}
 	
 }
