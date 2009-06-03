@@ -7,7 +7,9 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import entity.Membre;
 import entity.MessagePrive;
@@ -63,5 +65,22 @@ public class MessagePriveBean implements MessagePriveFacade {
 	public void supprimerMessagePrive(MessagePrive message) {
 		message = entityMgr.merge(message);
 		entityMgr.remove(message);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<MessagePrive> rechercheMessagesPrives(Collection<String> motsCles, Membre membre){
+		try {
+			String expressionRecherche = "SELECT m FROM MessagePrive as m ";
+			expressionRecherche += " WHERE (m.emetteur = " + membre.getId() + " OR m.destinataire = " + membre.getId() + ")";
+			for (String motCle : motsCles) {
+					expressionRecherche += " AND ";
+				expressionRecherche += " m.message LIKE CONCAT('%','" + motCle + "','%') ";
+			}
+			Query q = entityMgr.createQuery(expressionRecherche);
+			Collection<MessagePrive> messages = q.getResultList();
+			return messages;
+		} catch(NoResultException e) {
+			return null;
+		}
 	}
  }
