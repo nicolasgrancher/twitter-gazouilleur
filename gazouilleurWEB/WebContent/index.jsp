@@ -284,6 +284,8 @@ body {
 		
 		<!-- Debut onglet principal -->
 	        <rich:tab label="Home" id="tabHome">
+	        	<a4j:support event="ontabenter" action="#{membreControlleur.setOngletHomeActifToTrue}" reRender="poll"/>
+				<a4j:support event="ontableave" action="#{membreControlleur.setOngletHomeActifToFalse}" reRender="poll"/>
 	        	<rich:spacer height="15px" width="100%"/>
 	        	
 	        	<h:panelGroup rendered="#{membreControlleur.estConnecte == false}">
@@ -327,7 +329,7 @@ body {
 					<a4j:region>
 				        <h:form>
 				            <a4j:poll id="poll" interval="5000"
-				            	enabled="#{membreControlleur.estConnecte == true}"
+				            	enabled="#{membreControlleur.ongletHomeActif == true}"
 				                action="#{membreControlleur.recupererMessagesPublics}" 
 				                reRender="poll,listeMessagesPublics" />
 				        </h:form>
@@ -361,6 +363,8 @@ body {
 	    
 	    <!-- Debut onglet suiveur -->
 	        <rich:tab label="Suiveurs/Suivis" id="tabSuiveurs" disabled="#{membreControlleur.estConnecte ==  false}">
+	        	<a4j:support event="ontabenter" action="#{membreControlleur.setOngletSuiveurActifToTrue}" reRender="pollSuivis,pollSuiveurs"/>
+				<a4j:support event="ontableave" action="#{membreControlleur.setOngletSuiveurActifToFalse}" reRender="pollSuivis,pollSuiveurs"/>
 				<style>
 					.cur { cursor: pointer; }
 				</style>
@@ -393,9 +397,9 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollSuivis" interval="5000"
-			            	enabled="#{membreControlleur.suivisPollEnabled}"
+			            	enabled="#{membreControlleur.ongletSuiveurActif}"
 			            	action="#{membreControlleur.listerMembres}"
-			                reRender="pollSuivis,ajoutSuivi,destinataireMessagePrive" />
+			                reRender="pollSuivis,ajoutSuivi" />
 			        </h:form>
 			    </a4j:region>
 			    
@@ -459,7 +463,7 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollSuiveurs" interval="5000"
-			            	enabled="true"
+			            	enabled="#{membreControlleur.ongletSuiveurActif}"
 			            	action="#{membreControlleur.listerSuiveurs}"
 			                reRender="pollSuiveurs,suiveursTable" />
 			        </h:form>
@@ -476,6 +480,8 @@ body {
 	        
 	        <!-- Debut onglet messages prives -->
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
+	        	<a4j:support event="ontabenter" action="#{membreControlleur.setOngletMessageActifToTrue}" reRender="pollMessagesPrivesRecus"/>
+				<a4j:support event="ontableave" action="#{membreControlleur.setOngletMessageActifToFalse}" reRender="pollMessagesPrivesRecus"/>
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="messagesPrivesForm" style="text-align:center;">
 					<rich:messages layout="list" showSummary="true" style="color:Red;">
@@ -506,10 +512,21 @@ body {
 						onclick="document.getElementById('messagesPrivesForm:messagesPrivesTextArea').value='';document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = '140'" 
 						immediate="true" ajaxSingle="true"/>	
 				</a4j:form>
+				<!-- Debut poll d'actualisation de la liste des membre -->
+				<a4j:region>
+			        <h:form>
+			            <a4j:poll id="pollComboBoxMessage" interval="5000"
+			            	enabled="#{membreControlleur.ongletMessageActif}"
+			            	action="#{membreControlleur.listerMembres}"
+			                reRender="pollComboBoxMessage,destinataireMessagePrive" />
+			        </h:form>
+			    </a4j:region>
+			    
+			    <!-- Fin poll d'actualisation de la liste des membres -->
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollMessagesPrivesRecus" interval="5000"
-			            	enabled="#{membreControlleur.estConnecte == true}"
+			            	enabled="#{membreControlleur.ongletMessageActif == true}"
 			                action="#{membreControlleur.recupererMessagesPrivesRecus}" 
 			                reRender="pollMessagesPrivesRecus,listeMessagesPrivesRecus" />
 			        </h:form>
