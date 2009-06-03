@@ -81,10 +81,12 @@ body {
 	<h:panelGroup id="connexionMenu">
 	
 		<!-- Debut lien de connexion affichant la popup de connexion -->
-		<h:panelGroup id="panelGroupConnexion">	
-			<a4j:commandLink value="Se connecter" id="lienConnexion" rendered="#{membreControlleur.estConnecte == false}">
-		        <rich:componentControl for="panel_connexion" attachTo="lienConnexion" operation="show" event="onclick"/>
-		    </a4j:commandLink>
+		<h:panelGroup id="panelGroupConnexion">
+			<a4j:form>	
+				<a4j:commandLink value="Se connecter" id="lienConnexion" rendered="#{membreControlleur.estConnecte == false}">
+			        <rich:componentControl for="panel_connexion" attachTo="lienConnexion" operation="show" event="onclick"/>
+			    </a4j:commandLink>
+			</a4j:form>
 		<!-- Fin lien de connexion -->
 	    
 		<!-- Debut lien de deconnexion -->
@@ -211,7 +213,9 @@ body {
 	<!-- Debut corps de la page -->
 	<center style="height: 100%;">
 		<div style="text-align: left; width: 70%; margin-top:20px;">
-			<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250" />
+			<a href="/gazouilleurWEB/">
+				<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250" />
+			</a>
 		</div>
 		<rich:tabPanel style="margin-top:20px; width: 70%;" switchType="client" id="tabPanel">
 		
@@ -292,6 +296,7 @@ body {
 				<style>
 					.cur { cursor: pointer; }
 				</style>
+				<rich:spacer height="15px" width="100%"/>
 			<center>
 		
 			<!-- Debut ajout d'un suivi -->
@@ -303,10 +308,13 @@ body {
 				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
 				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
 				    </rich:comboBox> 
+				    <rich:spacer height="15px" width="100%"/>
 				   	<a4j:commandButton action="#{membreControlleur.ajouterAmi}" value="Suivre" 
 				   		reRender="suivisTable"/>
 				</a4j:form>
 			<!-- Fin ajout d'un suivi -->
+			
+			<rich:spacer height="15px" width="100%"/>
 			
 			<!-- Debut poll d'actualisation de la liste des membre -->
 				<a4j:region>
@@ -401,7 +409,7 @@ body {
 						value="#{membreControlleur.messagePrive}"
 						onkeyup="document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = (140 - this.textLength);" 
 						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
-					<h:outputLabel value="Envoyer à" for="destinataireMessagePrive" />
+					<h:outputLabel value="Envoyer à" for="destinataireMessagePrive" /><br>
 				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" style="margin: auto;">

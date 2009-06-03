@@ -47,11 +47,16 @@
 	background-color: #97CD39; 
 	border: 1px solid black; 
 	margin: auto;
-	width: 180px;
+	width: 200px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	margin-top: 15px;
 }
 #lienInscription2:hover {
 	text-decoration: none;
+}
+
+#suivisTable, #suiveursTable {
+	margin: auto;
+	width: 200px;
 }
