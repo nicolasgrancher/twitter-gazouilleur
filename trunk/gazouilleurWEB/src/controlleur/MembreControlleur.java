@@ -6,17 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.jms.Session;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
-
-import org.richfaces.component.html.HtmlModalPanel;
-
-import com.sun.corba.se.spi.protocol.RequestDispatcherRegistry;
-import com.sun.tools.ws.processor.model.Request;
 
 import ejb.MembreFacade;
 import ejb.MessagePriveFacade;
@@ -61,6 +53,8 @@ public class MembreControlleur extends HttpServlet{
 	private Collection<MessagePublic> messagesPerso = new ArrayList<MessagePublic>();
 	private Collection<MessagePrive> messagesPrivesEmis = new ArrayList<MessagePrive>();
 	private Collection<MessagePrive> messagesPrivesRecus = new ArrayList<MessagePrive>();
+	
+	private Collection<String> motsClesRecherche = new ArrayList<String>();
 
 	public String creerMembre() {
 		closePanelInscription = false;
@@ -136,6 +130,7 @@ public class MembreControlleur extends HttpServlet{
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.ajouterAmi(membre, ami);
 			recupererMessagesPublics();
+			membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("ajoutSuiviForm", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
@@ -385,6 +380,7 @@ public class MembreControlleur extends HttpServlet{
 		return destinataireMessagePrive;
 	}
 
+
 	public void setClosePanelModifInfo(boolean closePanelModifInfo) {
 		this.closePanelModifInfo = closePanelModifInfo;
 	}
@@ -392,4 +388,18 @@ public class MembreControlleur extends HttpServlet{
 	public boolean isClosePanelModifInfo() {
 		return closePanelModifInfo;
 	}
+
+	public Collection<String> getMotsClesRecherche() {
+		return motsClesRecherche;
+	}
+
+	public void setMotsClesRecherche(Collection<String> motsClesRecherche) {
+		this.motsClesRecherche = motsClesRecherche;
+	}
+	
+	public String rechercherMessages() {
+		messagePublicFacade.rechercheMessagesPublics(getMotsClesRecherche());
+		return null;
+	}
+
 }
