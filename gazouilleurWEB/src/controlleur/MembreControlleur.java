@@ -59,6 +59,8 @@ public class MembreControlleur extends HttpServlet{
 	private Collection<MessagePrive> messagesPrivesRecus = new ArrayList<MessagePrive>();
 	
 	private Collection<String> motsClesRecherche = new ArrayList<String>();
+	private Collection<MessagePublic> messagesPublicsRecherche = new ArrayList<MessagePublic>();
+	private Collection<MessagePrive> messagesPrivesRecherche = new ArrayList<MessagePrive>();
 
 	public String creerMembre() {
 		closePanelInscription = false;
@@ -404,16 +406,48 @@ public class MembreControlleur extends HttpServlet{
 		return closePanelModifInfo;
 	}
 
-	public Collection<String> getMotsClesRecherche() {
-		return motsClesRecherche;
+	public String getMotsClesRecherche() {
+		String s = "";
+		for (int i = 0; i < motsClesRecherche.size(); i++) {
+			s += ((ArrayList<String>)motsClesRecherche).get(i) + " ";
+		}
+		return s;
 	}
 
-	public void setMotsClesRecherche(Collection<String> motsClesRecherche) {
-		this.motsClesRecherche = motsClesRecherche;
+	public void setMotsClesRecherche(String motsClesRecherche) {
+		Collection<String> collection = new ArrayList<String>();
+		String[] tab = motsClesRecherche.split(" ");
+		for (int i = 0; i < tab.length; i++) {
+			collection.add(tab[i]);
+		}
+		this.motsClesRecherche = collection;
 	}
 	
-	public String rechercherMessages() {
-		messagePublicFacade.rechercheMessagesPublics(getMotsClesRecherche());
+	public Collection<MessagePublic> getMessagesPublicsRecherche() {
+		return messagesPublicsRecherche;
+	}
+
+	public void setMessagesPublicsRecherche(
+			Collection<MessagePublic> messagesPublicsRecherche) {
+		this.messagesPublicsRecherche = messagesPublicsRecherche;
+	}
+	
+	public Collection<MessagePrive> getMessagesPrivesRecherche() {
+		return messagesPrivesRecherche;
+	}
+
+	public void setMessagesPrivesRecherche(
+			Collection<MessagePrive> messagesPrivesRecherche) {
+		this.messagesPrivesRecherche = messagesPrivesRecherche;
+	}
+
+	public String rechercherMessagesPublics() {
+		setMessagesPublicsRecherche(messagePublicFacade.rechercheMessagesPublics(motsClesRecherche));
+		return null;
+	}
+	
+	public String rechercherMessagesPrives() {
+		setMessagesPrivesRecherche(messagePriveFacade.rechercheMessagesPrives(motsClesRecherche, membre));
 		return null;
 	}
 
