@@ -409,7 +409,7 @@ body {
 						value="#{membreControlleur.messagePrive}"
 						onkeyup="document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = (140 - this.textLength);" 
 						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
-					<h:outputLabel value="Envoyer à" for="destinataireMessagePrive" /><br>
+					<br /><h:outputLabel value="Envoyer à" for="destinataireMessagePrive" /><br />
 				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" style="margin: auto;">
