@@ -53,7 +53,8 @@ public class MembreControlleur extends HttpServlet{
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
-	private boolean suivisPollEnabled = false;
+	private boolean closePanelModifInfo = false;
+	private boolean suivisPollEnabled = true;
 
 	private Collection<Membre> listeMembres = new ArrayList<Membre>();
 	private Collection<MessagePublic> messagesPublics = new ArrayList<MessagePublic>();
@@ -82,9 +83,31 @@ public class MembreControlleur extends HttpServlet{
 		return null;
 	}
 	
+	public String updateMembre() {
+		closePanelModifInfo = false;
+		try {
+			if(membre.getPassword() == ""){
+				throw new MembreException("Le champ mot de passe ne doit pas être vide.");
+			}
+			if(!verifierPassword()){
+				throw new MembreException("Les mots de passe ne correspondent pas.");
+			}
+			membre = membreFacade.updateMembre(membre);
+			membre.getListSuiveurs();
+			membre.getListSuivis();
+			setClosePanelModifInfo(true);
+		} catch (MembreException e) {
+			FacesContext.getCurrentInstance().addMessage("formModifInfo", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	} 
+	
 	public String deconnexion(){
 		membre = new Membre();
 		estConnecte = false;
+		suivisPollEnabled = false;
 		initVar();
 		return "deconnexion";
 	}
@@ -98,6 +121,7 @@ public class MembreControlleur extends HttpServlet{
 			return null;
 		}
 		estConnecte = true;
+		suivisPollEnabled = true;
 		closePanelConnexion = true;
 		recupererMessagesPublics();
 		recupererMessagesPerso();
@@ -113,8 +137,7 @@ public class MembreControlleur extends HttpServlet{
 			membre = membreFacade.ajouterAmi(membre, ami);
 			recupererMessagesPublics();
 		} catch (MembreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage("ajoutSuiviForm", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
 		return null;
 	}
@@ -165,6 +188,9 @@ public class MembreControlleur extends HttpServlet{
 			message.setMessage(messagePrive);
 			message.setEmetteur(membre);
 			message.setDestinataire(membreFacade.getByPseudo(destinataireMessagePrive));
+			if(message.getDestinataire().equals(membre)) {
+				throw new MembreException("Vous ne pouvez pas vous envoyer de message privé");
+			}
 			message.setDate(new Date());
 			messagePriveFacade.envoyerMessagePrive(message);
 			recupererMessagesPrivesEmis();
@@ -211,7 +237,13 @@ public class MembreControlleur extends HttpServlet{
 	}
 	
 	public String listerMembres() {
-		listeMembres = membreFacade.rechercheTous();
+		listeMembres = membreFacade.rechercheTous(membre);
+		return null;
+	}
+	
+	public String listerSuiveurs() {
+		membre = membreFacade.rafraichirMembre(membre);
+		//System.out.println("suiveur poll");
 		return null;
 	}
 
@@ -351,5 +383,13 @@ public class MembreControlleur extends HttpServlet{
 
 	public String getDestinataireMessagePrive() {
 		return destinataireMessagePrive;
+	}
+
+	public void setClosePanelModifInfo(boolean closePanelModifInfo) {
+		this.closePanelModifInfo = closePanelModifInfo;
+	}
+
+	public boolean isClosePanelModifInfo() {
+		return closePanelModifInfo;
 	}
 }
