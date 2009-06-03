@@ -219,64 +219,67 @@ body {
 	        <rich:tab label="Home" id="tabHome">
 	        	<rich:spacer height="15px" width="100%"/>
 	        	
-	        	<div style="padding-left: 20px; padding-right: 20px;">
-	        		<h1 style="font-size: 25px;">Qu'est ce que Gazouilleur ?</h1>
-	        		<div style="text-align: center;">
-	        			<h:graphicImage value="/resources/images/wind-up-bird.png" alt="oiseau" />
-	        		</div>
-	        		<p style="font-size: 16px;">
-	        			Gazouilleur est un service pour les amis, la famille, et les collègues pour communiquer et rester connecter 
-	        			grâce à des échanges de réponses rapides et fréquentes à une seule question simple : <strong>Que fais-tu ?</strong>
-	        		</p>
-	        	</div>
+	        	<h:panelGroup rendered="#{membreControlleur.estConnecte == false}">
+	        		<div style="padding-left: 20px; padding-right: 20px;">	
+		        		<h1 style="font-size: 25px;">Qu'est ce que Gazouilleur ?</h1>
+		        		<div style="text-align: center;">
+		        			<h:graphicImage value="/resources/images/wind-up-bird.png" alt="oiseau" />
+		        		</div>
+		        		<p style="font-size: 16px;">
+		        			Gazouilleur est un service pour les amis, la famille, et les collègues pour communiquer et rester connecter 
+		        			grâce à des échanges de réponses rapides et fréquentes à une seule question simple : <strong>Que fais-tu ?</strong>
+		        		</p>
+		        	</div>
+	        	</h:panelGroup>
 	        	
-	        	
-				<a4j:form id="message_form" style="text-align:center;">
-					<div style="text-align: right; padding-right: 20px;">
-						<h:outputText value="140" id="nbCarMessage" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
-					</div>
-					<h:inputTextarea id="message_text_area" style=" width : 95%;" 
-						value="#{membreControlleur.messagePublic}"
-						onkeyup="document.getElementById('message_form:nbCarMessage').innerHTML = (140 - this.textLength);" 
-						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
-					<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"
-						action="#{membreControlleur.publierMessagePublic}"
-						oncomplete="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"
-						reRender="listeMessagesPerso,listeMessagesPublics"/>
-					<a4j:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" 
-						onclick="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'" 
-						immediate="true" ajaxSingle="true"/>	
-				</a4j:form>
-				<a4j:region>
-			        <h:form>
-			            <a4j:poll id="poll" interval="5000"
-			            	enabled="#{membreControlleur.estConnecte == true}"
-			                action="#{membreControlleur.recupererMessagesPublics}" 
-			                reRender="poll,listeMessagesPublics" />
-			        </h:form>
-			    </a4j:region>
-		        <rich:spacer height="25px" width="100%"/>
-				
-				<rich:tabPanel switchType="client" id="tabPanelMessagesPublics">
-					<rich:tab label="Tous" id="tabMessagesPublicsTous">
-						<h:panelGroup id="listeMessagesPublics">
-							<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
-								<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.formatDate}" style="margin:10px 10px 10px 10px;">
-								    <h:outputText value="#{messagePublic.message}" />             
-								</rich:simpleTogglePanel>
-							</a4j:repeat>
-						</h:panelGroup>
-					</rich:tab>
-					<rich:tab label="Moi" id="tabMessagesPublicsMoi">
-						<h:panelGroup id="listeMessagesPerso">
-							<a4j:repeat value="#{membreControlleur.messagesPerso}" var="messagePerso">
-								<rich:simpleTogglePanel switchType="client" label="#{messagePerso.emetteur.pseudo} - #{messagePerso.formatDate}" style="margin:10px 10px 10px 10px;">
-								    <h:outputText value="#{messagePerso.message}" />             
-								</rich:simpleTogglePanel>
-							</a4j:repeat>
-						</h:panelGroup>
-					</rich:tab>
-				</rich:tabPanel>
+	        	<h:panelGroup rendered="#{membreControlleur.estConnecte == true}">
+					<a4j:form id="message_form" style="text-align:center;">
+						<div style="text-align: right; padding-right: 20px;">
+							<h:outputText value="140" id="nbCarMessage" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
+						</div>
+						<h:inputTextarea id="message_text_area" style=" width : 95%;" 
+							value="#{membreControlleur.messagePublic}"
+							onkeyup="document.getElementById('message_form:nbCarMessage').innerHTML = (140 - this.textLength);" 
+							onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
+						<a4j:commandButton id="message_bouton_envoyer" value="Envoyer" style="margin:5px;"
+							action="#{membreControlleur.publierMessagePublic}"
+							oncomplete="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'"
+							reRender="listeMessagesPerso,listeMessagesPublics"/>
+						<a4j:commandButton id="message_bouton_effacer" value="Effacer" style="margin:5px;" 
+							onclick="document.getElementById('message_form:message_text_area').value='';document.getElementById('message_form:nbCarMessage').innerHTML = '140'" 
+							immediate="true" ajaxSingle="true"/>	
+					</a4j:form>
+					<a4j:region>
+				        <h:form>
+				            <a4j:poll id="poll" interval="5000"
+				            	enabled="#{membreControlleur.estConnecte == true}"
+				                action="#{membreControlleur.recupererMessagesPublics}" 
+				                reRender="poll,listeMessagesPublics" />
+				        </h:form>
+				    </a4j:region>
+			        <rich:spacer height="25px" width="100%"/>
+					
+					<rich:tabPanel switchType="client" id="tabPanelMessagesPublics">
+						<rich:tab label="Tous" id="tabMessagesPublicsTous">
+							<h:panelGroup id="listeMessagesPublics">
+								<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
+									<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.formatDate}" style="margin:10px 10px 10px 10px;">
+									    <h:outputText value="#{messagePublic.message}" />             
+									</rich:simpleTogglePanel>
+								</a4j:repeat>
+							</h:panelGroup>
+						</rich:tab>
+						<rich:tab label="Moi" id="tabMessagesPublicsMoi">
+							<h:panelGroup id="listeMessagesPerso">
+								<a4j:repeat value="#{membreControlleur.messagesPerso}" var="messagePerso">
+									<rich:simpleTogglePanel switchType="client" label="#{messagePerso.emetteur.pseudo} - #{messagePerso.formatDate}" style="margin:10px 10px 10px 10px;">
+									    <h:outputText value="#{messagePerso.message}" />             
+									</rich:simpleTogglePanel>
+								</a4j:repeat>
+							</h:panelGroup>
+						</rich:tab>
+					</rich:tabPanel>
+				</h:panelGroup>
 				<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
 	    <!-- Fin onglet principal -->
