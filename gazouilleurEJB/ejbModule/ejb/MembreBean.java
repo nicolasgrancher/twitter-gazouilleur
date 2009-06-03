@@ -41,7 +41,7 @@ public class MembreBean implements MembreFacade {
 			Membre membre = (Membre)q.setParameter(1, pseudo).getSingleResult();
 			return membre;
 		} catch(NoResultException e){
-			throw new MembreException("Erreur GetByPseudo : Membre avec le pseudo "+pseudo+" n'existe pas");
+			throw new MembreException("Le membre avec le pseudo '"+pseudo+"' n'existe pas");
 		}
 	}
 
@@ -108,37 +108,44 @@ public class MembreBean implements MembreFacade {
 			membreupdate.setPrenom(membre.getPrenom());
 
 			if(pseudo == null || pseudo.equals(""))
-				throw new MembreException("Erreur Update : Pseudo manquant");
+				throw new MembreException("Pseudo manquant");
 			membreupdate.setPseudo(membre.getPseudo());
 
 			if(password == null || password.equals(""))
-				throw new MembreException("Erreur Update : Mot de passe manquant");
+				throw new MembreException("Mot de passe manquant");
 			membreupdate.setPassword(password);
 
 			if(email == null || email.equals(""))
-				throw new MembreException("Erreur Update : Email manquant");
+				throw new MembreException("Email manquant");
 			membreupdate.setEmail(membre.getEmail());
 			
 			//Update en base
 			try {
 				membreupdate = entityMgr.merge(membreupdate);
+				membreupdate.getListSuivis();
+				membreupdate.getListSuiveurs();
 				return membreupdate;
 			} catch (Exception e) {
-				throw new MembreException("Erreur Update : Email existe deja");
+				throw new MembreException("Email existe deja");
 			}
 
 		} else {
-			throw new MembreException("Erreur Update : Membre n'existe pas");
+			throw new MembreException("Membre n'existe pas");
 		}
 	}
 
 	/**
 	 * Suivre un ami
+	 * @throws MembreException 
 	 */
-	public Membre ajouterAmi (Membre membre, Membre ami) {
+	public Membre ajouterAmi (Membre membre, Membre ami) throws MembreException {
 		if (membre != null && ami != null) {
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
+			
+			if(membre.equals(ami)) {
+				throw new MembreException("Vous ne pouvez pas vous suivre");
+			}
 			
 			membre.ajouterSuivi(ami);
 			ami.ajouterSuiveur(membre);
@@ -176,6 +183,7 @@ public class MembreBean implements MembreFacade {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
 		collection.size(); // chargement de la collection persistée
+		Collections.sort((List<Membre>) collection);
 		return collection;
 	}
 	/**
@@ -185,6 +193,7 @@ public class MembreBean implements MembreFacade {
 		membre = getEntityMgr().merge(membre);
 		Collection<Membre> collection = membre.getListSuivis();
 		collection.size(); // chargement de la collection persistée
+		Collections.sort((List<Membre>) collection);
 		return collection;
 	}
 
@@ -220,14 +229,22 @@ public class MembreBean implements MembreFacade {
 	 * Lister tous les membres inscrits
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<Membre> rechercheTous() {
+	public Collection<Membre> rechercheTous(Membre membre) {
 		try {
 			Query q = entityMgr.createNamedQuery("findAll");
-			ArrayList<Membre> membres = (ArrayList<Membre>) q.getResultList();
+			ArrayList<Membre> membres = (ArrayList<Membre>) q.setParameter(1, membre.getPseudo()).getResultList();
 			Collections.sort(membres);
 			return membres;
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Rafraichir un objet membre
+	 */
+	public Membre rafraichirMembre(Membre membre) {
+		membre = getEntityMgr().merge(membre);
+		return membre;
 	}
 }
