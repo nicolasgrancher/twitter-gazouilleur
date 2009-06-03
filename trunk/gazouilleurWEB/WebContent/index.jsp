@@ -218,6 +218,19 @@ body {
 		<!-- Debut onglet principal -->
 	        <rich:tab label="Home" id="tabHome">
 	        	<rich:spacer height="15px" width="100%"/>
+	        	
+	        	<div style="padding-left: 20px; padding-right: 20px;">
+	        		<h1 style="font-size: 25px;">Qu'est ce que Gazouilleur ?</h1>
+	        		<div style="text-align: center;">
+	        			<h:graphicImage value="/resources/images/wind-up-bird.png" alt="oiseau" />
+	        		</div>
+	        		<p style="font-size: 16px;">
+	        			Gazouilleur est un service pour les amis, la famille, et les collègues pour communiquer et rester connecter 
+	        			grâce à des échanges de réponses rapides et fréquentes à une seule question simple : <strong>Que fais-tu ?</strong>
+	        		</p>
+	        	</div>
+	        	
+	        	
 				<a4j:form id="message_form" style="text-align:center;">
 					<div style="text-align: right; padding-right: 20px;">
 						<h:outputText value="140" id="nbCarMessage" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
