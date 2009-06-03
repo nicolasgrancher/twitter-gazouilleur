@@ -41,6 +41,7 @@ poll de gestion d'expiration de session
 <link href="<%=request.getContextPath()%>/resources/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/resources/stylesheets/master.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/resources/stylesheets/connexionMenu.css" media="screen, projection" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/resources/stylesheets/principale.css" media="screen, projection" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body {
 	background: #9ae4e8 url(resources/images/bg.gif) fixed no-repeat top left;
@@ -75,7 +76,6 @@ body {
 	
 	<!-- Debut entete de la page -->
 	
-	<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250"/>
 	
 	<!-- Debut menu de connexion -->
 	<h:panelGroup id="connexionMenu">
@@ -209,14 +209,19 @@ body {
 	<!-- Fin menu de connexion -->
 	
 	<!-- Debut corps de la page -->
-	<center>
-		<rich:tabPanel style="margin-top:30px;" width="70%" switchType="client" id="tabPanel">
+	<center style="height: 100%;">
+		<div style="text-align: left; width: 70%;">
+			<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250" />
+		</div>
+		<rich:tabPanel style="margin-top:30px; width: 70%;" switchType="client" id="tabPanel">
 		
 		<!-- Debut onglet principal -->
 	        <rich:tab label="Home" id="tabHome">
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="message_form" style="text-align:center;">
-					<h:outputText value="140" id="nbCarMessage" /><h:outputText value=" caractères restants" />
+					<div style="text-align: right; padding-right: 20px;">
+						<h:outputText value="140" id="nbCarMessage" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
+					</div>
 					<h:inputTextarea id="message_text_area" style=" width : 95%;" 
 						value="#{membreControlleur.messagePublic}"
 						onkeyup="document.getElementById('message_form:nbCarMessage').innerHTML = (140 - this.textLength);" 
@@ -368,7 +373,9 @@ body {
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="messagesPrivesForm" style="text-align:center;">
-					<h:outputText value="140" id="nbCarMessagesPrives" /><h:outputText value=" caractères restants" />
+					<div style="text-align: right; padding-right: 20px;">
+						<h:outputText value="140" id="nbCarMessagesPrives" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
+					</div>
 					<h:inputTextarea id="messagesPrivesTextArea" style=" width : 95%;" 
 						value="#{membreControlleur.messagePrive}"
 						onkeyup="document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = (140 - this.textLength);" 
