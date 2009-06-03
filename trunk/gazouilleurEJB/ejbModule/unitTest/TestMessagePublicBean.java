@@ -5,9 +5,21 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJBException;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.MessageConsumer;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+import javax.jms.Topic;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import ejb.MembreFacade;
 import ejb.MessagePublicFacade;
@@ -23,6 +35,7 @@ public class TestMessagePublicBean extends TestCase  {
 	private Membre suiveur;
 	
 	protected void setUp() throws Exception {
+		// Initialisation du contexte EJB
 		annuaire = new InitialContext();
 		annuaire.addToEnvironment(InitialContext.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
 		annuaire.addToEnvironment(InitialContext.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
@@ -140,4 +153,41 @@ public class TestMessagePublicBean extends TestCase  {
 		
 		assertEquals(1, messages.size());
 	}
+
+	/*  
+	//test en erreur (le message est envoyé, mais l'object récupéré vaut null
+	
+	public void testPublishMessagePublic() throws NamingException{
+		MessagePublicFacade facade = (MessagePublicFacade) annuaire.lookup("MessagePublicBean");
+		
+		MessagePublic message = new MessagePublic();
+		message.setDate(new Date());
+		
+		message.setEmetteur(emetteur);
+		message.setMessage("Hello universe !");
+		
+		// Publication du message sur le topic		
+		facade.publishMessagePublic(message);
+		
+		
+		// On recupere le message
+		ConnectionFactory connectionFactory = (ConnectionFactory) annuaire.lookup("/ConnectionFactory");
+		Topic topic = (Topic)annuaire.lookup("/topic/MsgPublicTopic");
+		Connection connection = null;
+		Session session = null;
+		MessageConsumer consumer = null;
+		ObjectMessage messageRecu = null;
+		try {
+			connection = connectionFactory.createConnection();
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			consumer =  session.createConsumer(topic);
+			messageRecu = (ObjectMessage) consumer.receive(2000);
+			MessagePublic messagePublic = (MessagePublic) messageRecu.getObject();
+			assertEquals("Hello universe !", messagePublic.getMessage());
+		} catch (JMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	*/
 }

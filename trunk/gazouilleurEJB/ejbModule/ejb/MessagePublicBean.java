@@ -134,7 +134,7 @@ public class MessagePublicBean implements MessagePublicFacade {
 		}
 	}
 	
-	// A tester avec test unitaire
+	/*
 	public void publishMessagePublic(MessagePublic msgPublic){
 		Session session = null;
 		try{
@@ -163,4 +163,5 @@ public class MessagePublicBean implements MessagePublicFacade {
             }
 		}
 	}
+	*/
  }

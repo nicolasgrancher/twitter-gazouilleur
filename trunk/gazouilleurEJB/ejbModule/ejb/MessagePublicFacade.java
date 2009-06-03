@@ -37,4 +37,12 @@ public interface MessagePublicFacade {
 	 * @return
 	 */
 	public Collection<MessagePublic> rechercheMessagesPublics(Collection<String> motsCles);
+
+	/**
+	 * Publie un message public sur un topic
+	 * @param membres
+	 * @return
+	 */
+	//public void publishMessagePublic(MessagePublic msgPublic);
+
 }
