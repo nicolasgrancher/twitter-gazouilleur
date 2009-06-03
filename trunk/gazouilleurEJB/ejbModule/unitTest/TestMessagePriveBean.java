@@ -1,5 +1,6 @@
 package unitTest;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -49,9 +50,19 @@ public class TestMessagePriveBean extends TestCase  {
 		MessagePriveFacade facade = (MessagePriveFacade) annuaire.lookup("MessagePriveBean");
 		
 		emetteur.setMessagesPrivesEmis((List<MessagePrive>)facade.getMessagesPrivesEmis(emetteur));
-		facadeMembre.supprimerMembre(emetteur);
+		for (int i = 0; i < emetteur.getMessagesPrivesEmis().size(); i++) {
+			facade.supprimerMessagePrive(emetteur.getMessagesPrivesEmis().get(i));
+			emetteur.getMessagesPrivesEmis().remove(i);
+		}
+		
 		
 		destinataire.setMessagesPrivesEmis((List<MessagePrive>)facade.getMessagesPrivesEmis(destinataire));
+		for (int i = 0; i < destinataire.getMessagesPrivesEmis().size(); i++) {
+			facade.supprimerMessagePrive(destinataire.getMessagesPrivesEmis().get(i));
+			destinataire.getMessagesPrivesEmis().remove(i);
+		}
+		
+		facadeMembre.supprimerMembre(emetteur);
 		facadeMembre.supprimerMembre(destinataire);
 	}
 	
@@ -118,5 +129,30 @@ public class TestMessagePriveBean extends TestCase  {
 		
 		MessagePrive m = facade.getById(id);
 		assertNull(m);
+	}
+	
+	public void testRechercheMessagesPrives() throws NamingException {
+		MessagePriveFacade facade = (MessagePriveFacade) annuaire.lookup("MessagePriveBean");
+		
+		MessagePrive message = new MessagePrive();
+		message.setDate(new Date());
+		message.setEmetteur(emetteur);
+		message.setDestinataire(destinataire);
+		message.setMessage("Voici un test de message !");
+		message = facade.envoyerMessagePrive(message);
+		
+		MessagePrive message2 = new MessagePrive();
+		message2.setDate(new Date());
+		message2.setEmetteur(destinataire);
+		message2.setDestinataire(emetteur);
+		message2.setMessage("Hello world !");
+		message2 = facade.envoyerMessagePrive(message2);
+		
+		Collection<String> motsCles = new ArrayList<String>();
+		motsCles.add("test");
+		
+		Collection<MessagePrive> messages = facade.rechercheMessagesPrives(motsCles, emetteur);
+		
+		assertEquals(1, messages.size());
 	}
 }

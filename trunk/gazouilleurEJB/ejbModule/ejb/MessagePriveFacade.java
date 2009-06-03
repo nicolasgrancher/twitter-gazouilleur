@@ -38,4 +38,12 @@ public interface MessagePriveFacade {
 	 * @param message
 	 */
 	public void supprimerMessagePrive(MessagePrive message);
+	
+	/**
+	 * Recherche dans les messages prives d'un membre
+	 * @param motsCles
+	 * @param membre
+	 * @return
+	 */
+	public Collection<MessagePrive> rechercheMessagesPrives(Collection<String> motsCles, Membre membre);
 }
