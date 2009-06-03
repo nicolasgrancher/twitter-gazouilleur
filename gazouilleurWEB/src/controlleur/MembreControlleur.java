@@ -130,7 +130,6 @@ public class MembreControlleur extends HttpServlet{
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.ajouterAmi(membre, ami);
 			recupererMessagesPublics();
-			membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("ajoutSuiviForm", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
