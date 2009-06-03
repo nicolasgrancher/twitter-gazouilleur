@@ -394,6 +394,8 @@ body {
 			    <!-- Fin poll d'actualisation de la liste des suiveurs -->
 			    
 			</center>
+			<p style="text-align: left; padding-left: 120px;width: 200px;"><i>Cliquez sur un membre suivi pour ne plus le suivre.</i></p>
+			
 			<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
 	        <!-- Fin onglet suiveurs -->
