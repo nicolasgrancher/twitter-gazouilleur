@@ -241,6 +241,11 @@ body {
 	        	
 	        	<h:panelGroup rendered="#{membreControlleur.estConnecte == true}">
 					<a4j:form id="message_form" style="text-align:center;">
+						<rich:messages layout="list" showSummary="true" style="color:Red;">
+							<f:facet name="errorMarker">
+								<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
+							</f:facet>
+				 		</rich:messages>
 						<div style="text-align: right; padding-right: 20px;">
 							<h:outputText value="140" id="nbCarMessage" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
 						</div>
@@ -404,6 +409,11 @@ body {
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="messagesPrivesForm" style="text-align:center;">
+					<rich:messages layout="list" showSummary="true" style="color:Red;">
+						<f:facet name="errorMarker">
+							<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
+						</f:facet>
+			 		</rich:messages>
 					<div style="text-align: right; padding-right: 20px;">
 						<h:outputText value="140" id="nbCarMessagesPrives" style="color: silver; font-size: 2.5em;" /><h:outputText value=" caractères restants" style="color: silver; font-size: 2em;" />
 					</div>
