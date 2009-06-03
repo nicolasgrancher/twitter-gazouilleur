@@ -26,7 +26,6 @@ public class MessagePrive implements Serializable, Comparable<MessagePrive> {
 	private Membre destinataire;
 	
 	
-	@Temporal(TemporalType.DATE)
 	private Date date;
 	
 	public int getId() {
