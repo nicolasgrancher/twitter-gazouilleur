@@ -355,6 +355,24 @@ body {
 								</a4j:repeat>
 							</h:panelGroup>
 						</rich:tab>
+						<rich:tab label="Recherche" id="tabMessagesPublicsRecherche">
+							<rich:spacer height="15px" width="100%"/>
+							<a4j:form id="recherche_public_form" style="text-align:center;">
+								<h:outputLabel for="recherche_public_text_area" value="Saisissez un ou plusieurs mots clés : " style="margin:7px;" />
+								<h:inputText id="recherche_public_text_area" style=" width : 20%;margin:7px;"
+									value="#{membreControlleur.motsClesRecherche}"/>
+								<a4j:commandButton id="recherche_public_bouton_envoyer" value="Envoyer" style="margin:5px;"
+									action="#{membreControlleur.rechercherMessagesPublics}"
+									reRender="listeMessagesRecherche"/>
+							</a4j:form>
+							<h:panelGroup id="listeMessagesRecherche">
+								<a4j:repeat value="#{membreControlleur.messagesPublicsRecherche}" var="messagePublicRecherche">
+									<rich:simpleTogglePanel switchType="client" label="#{messagePublicRecherche.emetteur.pseudo} - #{messagePublicRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
+									    <h:outputText value="#{messagePublicRecherche.message}" />             
+									</rich:simpleTogglePanel>
+								</a4j:repeat>
+							</h:panelGroup>
+						</rich:tab>
 					</rich:tabPanel>
 				</h:panelGroup>
 				<rich:spacer height="15px" width="100%"/>
@@ -472,7 +490,7 @@ body {
 			    <!-- Fin poll d'actualisation de la liste des suiveurs -->
 			    
 			</center>
-			<p style="text-align: left; padding-left: 120px;width: 200px;"><i>Cliquez sur un membre suivi pour ne plus le suivre.</i></p>
+			<p style="text-align: left; padding-left: 20px;"><i>Cliquez sur un membre suivi pour ne plus le suivre.</i></p>
 			
 			<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
@@ -552,6 +570,24 @@ body {
 							</a4j:repeat>
 						</h:panelGroup>
 					</rich:tab>
+					<rich:tab label="Recherche" id="tabMessagesPrivesRecherche">
+							<rich:spacer height="15px" width="100%"/>
+							<a4j:form id="recherche_prive_form" style="text-align:center;">
+								<h:outputLabel for="recherche_prive_text_area" value="Saisissez un ou plusieurs mots clés : " style="margin:7px;" />
+								<h:inputText id="recherche_prive_text_area" style=" width : 20%;margin:7px;"
+									value="#{membreControlleur.motsClesRecherche}"/>
+								<a4j:commandButton id="recherche_prive_bouton_envoyer" value="Envoyer" style="margin:5px;"
+									action="#{membreControlleur.rechercherMessagesPrives}"
+									reRender="listeMessagesPrivesRecherche"/>
+							</a4j:form>
+							<h:panelGroup id="listeMessagesPrivesRecherche">
+								<a4j:repeat value="#{membreControlleur.messagesPrivesRecherche}" var="messagePriveRecherche">
+									<rich:simpleTogglePanel switchType="client" label="#{messagePriveRecherche.emetteur.pseudo} - #{messagePriveRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
+									    <h:outputText value="#{messagePriveRecherche.message}" />             
+									</rich:simpleTogglePanel>
+								</a4j:repeat>
+							</h:panelGroup>
+						</rich:tab>
 				</rich:tabPanel>
 				<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
