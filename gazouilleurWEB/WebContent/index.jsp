@@ -103,8 +103,14 @@ body {
 			<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
 			     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
 			</a4j:commandLink>
-		</h:panelGroup>
 		<!-- Fin lien d'inscription -->
+		
+		<!-- Debut lien de modification du compte affichant la popup associee-->
+			<a4j:commandLink value="Modifier ses infos" id="lienModifCompte" rendered="#{membreControlleur.estConnecte ==  true}">
+			     <rich:componentControl for="panelModifCompte" attachTo="lienModifCompte" operation="show" event="onclick"/>
+			</a4j:commandLink>
+		</h:panelGroup>
+		<!-- Fin lien de modification du compte -->
 	
 		<!-- Debut popup de connexion -->
 		<rich:modalPanel id="panel_connexion" autosized="true">
@@ -207,6 +213,63 @@ body {
 		</rich:modalPanel>
 		<!-- Fin popup d'inscription -->
 		
+		<!-- Debut popup de modification du compte -->
+		<rich:modalPanel id="panelModifCompte" autosized="true">
+			<f:facet name="header">
+				<h:panelGroup>
+		        	<h:outputText value="Modification des informations"></h:outputText>
+		        </h:panelGroup>
+		    </f:facet>
+		    <f:facet name="controls">
+		        <h:panelGroup>
+		        	<h:graphicImage value="/resources/images/close.png" styleClass="hidelink" id="hidelinkModifCompte"/>
+		            <rich:componentControl for="panelModifCompte" attachTo="hidelinkModifCompte" operation="hide" event="onclick"/>
+				</h:panelGroup>
+		    </f:facet>
+		    <a4j:form id="formModifCompte" ajaxSubmit="true">
+		 		<rich:messages layout="list" showSummary="true" style="color:Red;">
+					<f:facet name="errorMarker">
+						<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
+					</f:facet>
+		 		</rich:messages>
+		      	<h:panelGrid columns="2">
+		    		<h:outputLabel id="pseudoLabelModif" for="pseudoModif" value="Pseudo" />
+		    		<h:inputText id="pseudoModif" value="#{membreControlleur.membre.pseudo}" >
+		    			<rich:ajaxValidator event="onsubmit" />
+		    		</h:inputText>
+		
+		    		<h:outputLabel id="passwordLabel" for="password" value="Choisissez votre mot de passe" />
+		    		<h:inputSecret id="password" value="#{membreControlleur.membre.password}" />
+		
+		    		<h:outputLabel id="password2Label" for="password2" value="Réinsérez votre mot de passe" />
+		    		<h:inputSecret id="password2" value="#{membreControlleur.password2}" />
+		
+					<h:outputLabel id="nomLabel" for="nom" value="Nom" />
+					<h:inputText id="nom" value="#{membreControlleur.membre.nom}">
+		    			<rich:ajaxValidator event="onsubmit" />
+		    		</h:inputText>
+		
+		   			<h:outputLabel id="prenomLabel" for="prenom" value="Prénom" />
+		    		<h:inputText id="prenom" value="#{membreControlleur.membre.prenom}">
+		    			<rich:ajaxValidator event="onsubmit" />
+		    		</h:inputText>
+		    		
+		    		<h:outputLabel id="emailLabel" for="email" value="Email" />
+		    		<h:inputText id="email" value="#{membreControlleur.membre.email}">
+		    			<rich:ajaxValidator event="onsubmit" />
+		    		</h:inputText>
+		
+		 			<f:facet name="footer">
+		  				<h:panelGroup style="display:block; text-align:center">
+							<a4j:commandButton value="Ok" action="#{membreControlleur.updateMembre}" id="formModifInfoButton" 
+								oncomplete="if('#{membreControlleur.closePanelModifInfo}' == 'true'){javascript:Richfaces.hideModalPanel('panelModifCompte');}"/>
+						</h:panelGroup>
+					</f:facet>
+		 		</h:panelGrid>
+			</a4j:form>
+		</rich:modalPanel>
+		<!-- Fin popup de modification du compte -->
+		
 	</h:panelGroup>
 	<!-- Fin menu de connexion -->
 	
@@ -305,13 +368,18 @@ body {
 			<center>
 		
 			<!-- Debut ajout d'un suivi -->
-				<a4j:form>
+				<a4j:form id="ajoutSuiviForm">
+					<rich:messages layout="list" showSummary="true" style="color:Red;">
+						<f:facet name="errorMarker">
+							<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
+						</f:facet>
+			 		</rich:messages>
 			    	<h:outputLabel id="ajoutSuiviLabel" for="ajoutSuivi" value="Suivez un ami" />
 				    <rich:comboBox id="ajoutSuivi" value="#{membreControlleur.ajoutSuivi}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" >
-				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
-				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}" reRender="pollSuivis"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}" reRender="pollSuivis"/>
 				    </rich:comboBox> 
 				    <rich:spacer height="15px" width="100%"/>
 				   	<a4j:commandButton action="#{membreControlleur.ajouterAmi}" value="Suivre" 
@@ -327,7 +395,7 @@ body {
 			            <a4j:poll id="pollSuivis" interval="5000"
 			            	enabled="#{membreControlleur.suivisPollEnabled}"
 			            	action="#{membreControlleur.listerMembres}"
-			                reRender="pollSuivis,suiveursTable,ajoutSuivi,destinataireMessagePrive" />
+			                reRender="pollSuivis,ajoutSuivi,destinataireMessagePrive" />
 			        </h:form>
 			    </a4j:region>
 			    
@@ -391,7 +459,8 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollSuiveurs" interval="5000"
-			            	enabled="false"
+			            	enabled="true"
+			            	action="#{membreControlleur.listerSuiveurs}"
 			                reRender="pollSuiveurs,suiveursTable" />
 			        </h:form>
 			    </a4j:region>
@@ -425,8 +494,8 @@ body {
 				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" style="margin: auto;">
-				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
-				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}" reRender="pollSuivis"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}" reRender="pollSuivis"/>
 				    </rich:comboBox> 
 				    <rich:spacer height="15px" width="100%"/>
 					<a4j:commandButton id="messagesPrivesBoutonEnvoyer" value="Envoyer" style="margin:5px;"
