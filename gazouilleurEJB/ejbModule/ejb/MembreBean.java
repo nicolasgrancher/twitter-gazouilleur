@@ -141,6 +141,7 @@ public class MembreBean implements MembreFacade {
 			ami = getEntityMgr().merge(ami);
 			
 			membre.ajouterSuivi(ami);
+			ami.ajouterSuiveur(membre);
 			
 			membre = getEntityMgr().merge(membre);
 			ami = getEntityMgr().merge(ami);
