@@ -74,8 +74,9 @@ public interface MembreFacade {
 	 * Suivre un ami
 	 * @param membre
 	 * @param ami
+	 * @throws MembreException 
 	 */
-	public Membre ajouterAmi (Membre membre, Membre ami);
+	public Membre ajouterAmi (Membre membre, Membre ami) throws MembreException;
 	
 	/**
 	 * Ne plus suivre un ami
@@ -115,6 +116,11 @@ public interface MembreFacade {
 	/**
 	 * Recherche tous les inscrits
 	 */
-	public Collection<Membre> rechercheTous();
+	public Collection<Membre> rechercheTous(Membre membre);
+	
+	/**
+	 * Rafraichit un membre
+	 */
+	public Membre rafraichirMembre(Membre membre);
 
 }
