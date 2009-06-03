@@ -210,10 +210,10 @@ body {
 	
 	<!-- Debut corps de la page -->
 	<center style="height: 100%;">
-		<div style="text-align: left; width: 70%;">
+		<div style="text-align: left; width: 70%; margin-top:20px;">
 			<h:graphicImage value="/resources/images/gazouilleur.png" alt="Gazouilleur" height="30" width="250" />
 		</div>
-		<rich:tabPanel style="margin-top:30px; width: 70%;" switchType="client" id="tabPanel">
+		<rich:tabPanel style="margin-top:20px; width: 70%;" switchType="client" id="tabPanel">
 		
 		<!-- Debut onglet principal -->
 	        <rich:tab label="Home" id="tabHome">
@@ -264,6 +264,7 @@ body {
 						</h:panelGroup>
 					</rich:tab>
 				</rich:tabPanel>
+				<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
 	    <!-- Fin onglet principal -->
 	    
@@ -366,6 +367,7 @@ body {
 			    <!-- Fin poll d'actualisation de la liste des suiveurs -->
 			    
 			</center>
+			<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
 	        <!-- Fin onglet suiveurs -->
 	        
@@ -380,13 +382,14 @@ body {
 						value="#{membreControlleur.messagePrive}"
 						onkeyup="document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = (140 - this.textLength);" 
 						onkeypress="if(this.textLength > 139) this.value=this.value.substr(0,139);"/>
-					<h:outputLabel value="Envoyer a" for="destinataireMessagePrive" />
+					<h:outputLabel value="Envoyer à" for="destinataireMessagePrive" />
 				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
-				    	directInputSuggestions="true" >
+				    	directInputSuggestions="true" style="margin: auto;">
 				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}"/>
 				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}"/>
 				    </rich:comboBox> 
+				    <rich:spacer height="15px" width="100%"/>
 					<a4j:commandButton id="messagesPrivesBoutonEnvoyer" value="Envoyer" style="margin:5px;"
 						action="#{membreControlleur.publierMessagePrive}"
 						oncomplete="document.getElementById('messagesPrivesForm:messagesPrivesTextArea').value='';document.getElementById('messagesPrivesForm:nbCarMessagesPrives').innerHTML = '140'"
@@ -425,6 +428,7 @@ body {
 						</h:panelGroup>
 					</rich:tab>
 				</rich:tabPanel>
+				<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>
 	    </rich:tabPanel>
     </center>
