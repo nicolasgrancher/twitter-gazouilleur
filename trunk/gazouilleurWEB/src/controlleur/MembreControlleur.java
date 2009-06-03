@@ -64,6 +64,9 @@ public class MembreControlleur extends HttpServlet{
 	public String creerMembre() {
 		closePanelInscription = false;
 		try {
+			if(membre.getPassword() == ""){
+				throw new MembreException("Le champ mot de passe ne doit pas être vide.");
+			}
 			if(!verifierPassword()){
 				throw new MembreException("Les mots de passe ne correspondent pas.");
 			}
@@ -130,18 +133,34 @@ public class MembreControlleur extends HttpServlet{
 	}
 	
 	public String publierMessagePublic() {
-		MessagePublic message = new MessagePublic();
-		message.setMessage(messagePublic);
-		message.setEmetteur(membre);
-		message.setDate(new Date());
-		messagePublicFacade.publierMessagePublic(message);
-		recupererMessagesPerso();
-		recupererMessagesPublics();
+		try {
+			if(messagePublic.length() == 0) {
+				throw new MembreException("Le message est vide");
+			}
+			if(messagePublic.length() > 140) {
+				throw new MembreException("Le message ne doit pas excéder 140 caractères");
+			}
+			MessagePublic message = new MessagePublic();
+			message.setMessage(messagePublic);
+			message.setEmetteur(membre);
+			message.setDate(new Date());
+			messagePublicFacade.publierMessagePublic(message);
+			recupererMessagesPerso();
+			recupererMessagesPublics();
+		} catch (MembreException e) {
+			FacesContext.getCurrentInstance().addMessage("message_form", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+		}
 		return null;
 	}
 	
 	public String publierMessagePrive() {
 		try {
+			if(messagePrive.length() == 0) {
+				throw new MembreException("Le message est vide");
+			}
+			if(messagePrive.length() > 140) {
+				throw new MembreException("Le message ne doit pas excéder 140 caractères");
+			}
 			MessagePrive message = new MessagePrive();
 			message.setMessage(messagePrive);
 			message.setEmetteur(membre);
@@ -151,8 +170,7 @@ public class MembreControlleur extends HttpServlet{
 			recupererMessagesPrivesEmis();
 			recupererMessagesPrivesRecus();
 		} catch (MembreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage("messagesPrivesForm", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
 		return null;
 	}
