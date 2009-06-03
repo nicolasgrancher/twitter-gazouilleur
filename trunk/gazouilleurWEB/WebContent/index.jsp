@@ -229,6 +229,9 @@ body {
 		        			Gazouilleur est un service pour les amis, la famille, et les collègues pour communiquer et rester connecter 
 		        			grâce à des échanges de réponses rapides et fréquentes à une seule question simple : <strong>Que fais-tu ?</strong>
 		        		</p>
+		        		<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription2">
+						     <rich:componentControl for="panel_inscription" attachTo="lienInscription2" operation="show" event="onclick"/>
+						</a4j:commandLink>
 		        	</div>
 	        	</h:panelGroup>
 	        	
