@@ -37,3 +37,21 @@
 	cursor: pointer;
 	border-color: silver;
 }
+
+#lienInscription2 {
+	font-size: 16px;
+	color: white;
+	font-weight: bold;
+	text-align: center; 
+	display: block; 
+	background-color: #97CD39; 
+	border: 1px solid black; 
+	margin: auto;
+	width: 180px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 15px;
+}
+#lienInscription2:hover {
+	text-decoration: none;
+}
