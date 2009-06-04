@@ -331,12 +331,12 @@ body {
 							immediate="true" ajaxSingle="true"/>	
 					</a4j:form>
 					<a4j:region>
-				        <h:form>
-				            <a4j:poll id="poll" interval="5000"
+				        <a4j:form>
+				            <a4j:poll id="poll" interval="5000" limitToList="true"
 				            	enabled="#{membreControlleur.ongletHomeActif == true}"
 				                action="#{membreControlleur.recupererMessagesPublics}" 
 				                reRender="poll,listeMessagesPublics" />
-				        </h:form>
+				        </a4j:form>
 				    </a4j:region>
 			        <rich:spacer height="25px" width="100%"/>
 					
@@ -418,7 +418,7 @@ body {
 			<!-- Debut poll d'actualisation de la liste des membre -->
 				<a4j:region>
 			        <h:form>
-			            <a4j:poll id="pollSuivis" interval="5000"
+			            <a4j:poll id="pollSuivis" interval="5000" limitToList="true"
 			            	enabled="#{membreControlleur.ongletSuiveurActif}"
 			            	action="#{membreControlleur.listerMembres}"
 			                reRender="pollSuivis,ajoutSuivi" />
@@ -484,7 +484,7 @@ body {
 				<!-- Debut poll d'actualisation de la liste des suiveurs -->
 				<a4j:region>
 			        <h:form>
-			            <a4j:poll id="pollSuiveurs" interval="5000"
+			            <a4j:poll id="pollSuiveurs" interval="5000" limitToList="true"
 			            	enabled="#{membreControlleur.ongletSuiveurActif}"
 			            	action="#{membreControlleur.listerSuiveurs}"
 			                reRender="pollSuiveurs,suiveursTable" />
@@ -537,7 +537,7 @@ body {
 				<!-- Debut poll d'actualisation de la liste des membre -->
 				<a4j:region>
 			        <h:form>
-			            <a4j:poll id="pollComboBoxMessage" interval="5000"
+			            <a4j:poll id="pollComboBoxMessage" interval="5000" limitToList="true"
 			            	enabled="#{membreControlleur.ongletMessageActif}"
 			            	action="#{membreControlleur.listerMembres}"
 			                reRender="pollComboBoxMessage,destinataireMessagePrive" />
@@ -547,7 +547,7 @@ body {
 			    <!-- Fin poll d'actualisation de la liste des membres -->
 				<a4j:region>
 			        <h:form>
-			            <a4j:poll id="pollMessagesPrivesRecus" interval="5000"
+			            <a4j:poll id="pollMessagesPrivesRecus" interval="5000" limitToList="true"
 			            	enabled="#{membreControlleur.ongletMessageActif == true}"
 			                action="#{membreControlleur.recupererMessagesPrivesRecus}" 
 			                reRender="pollMessagesPrivesRecus,listeMessagesPrivesRecus" />
