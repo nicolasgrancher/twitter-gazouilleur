@@ -345,20 +345,52 @@ body {
 					<rich:tabPanel switchType="client" id="tabPanelMessagesPublics">
 						<rich:tab label="Tous" id="tabMessagesPublicsTous">
 							<h:panelGroup id="listeMessagesPublics">
-								<a4j:repeat value="#{membreControlleur.messagesPublics}" var="messagePublic">
-									<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.formatDate}" style="margin:10px 10px 10px 10px;">
-									    <h:outputText value="#{messagePublic.message}" />             
-									</rich:simpleTogglePanel>
-								</a4j:repeat>
+								<a4j:form>
+									<rich:spacer height="30" />
+									<rich:datascroller align="left" for="messagesPublicsTable" maxPages="50"
+	            						id="messagesPublicsTableScroller1" reRender="messagesPublicsTableScroller2"
+	            						page="#{membreControlleur.pageMessagesPublicsTableScroller}"/>
+	            					<rich:spacer height="10" />
+									<rich:dataTable value="#{membreControlleur.messagesPublics}" 
+									var="messagePublic" width="100%" border="0" 
+									rows="10" id="messagesPublicsTable">
+										<h:column>
+											<rich:simpleTogglePanel switchType="client" label="#{messagePublic.emetteur.pseudo} - #{messagePublic.formatDate}" style="margin:10px 10px 10px 10px;">
+											    <h:outputText value="#{messagePublic.message}" />             
+											</rich:simpleTogglePanel>
+										</h:column>
+									</rich:dataTable>
+									<rich:spacer height="10" />
+									<rich:datascroller align="left" for="messagesPublicsTable" maxPages="50"
+	            						id="messagesPublicsTableScroller2" reRender="messagesPublicsTableScroller1" 
+	            						page="#{membreControlleur.pageMessagesPublicsTableScroller}"/>
+	            					<rich:spacer height="30" />
+								</a4j:form>
 							</h:panelGroup>
 						</rich:tab>
 						<rich:tab label="Moi" id="tabMessagesPublicsMoi">
 							<h:panelGroup id="listeMessagesPerso">
-								<a4j:repeat value="#{membreControlleur.messagesPerso}" var="messagePerso">
-									<rich:simpleTogglePanel switchType="client" label="#{messagePerso.emetteur.pseudo} - #{messagePerso.formatDate}" style="margin:10px 10px 10px 10px;">
-									    <h:outputText value="#{messagePerso.message}" />             
-									</rich:simpleTogglePanel>
-								</a4j:repeat>
+								<a4j:form>
+									<rich:spacer height="30" />
+									<rich:datascroller align="left" for="messagesPersosTable" maxPages="50"
+	            						id="messagesPersosTableScroller1" reRender="messagesPublicsTableScroller2"
+	            						page="#{membreControlleur.pageMessagesPersosTableScroller}"/>
+	            					<rich:spacer height="10" />
+									<rich:dataTable value="#{membreControlleur.messagesPerso}" 
+									var="messagePerso" width="100%" border="0" 
+									rows="10" id="messagesPersosTable">
+										<h:column>
+											<rich:simpleTogglePanel switchType="client" label="#{messagePerso.emetteur.pseudo} - #{messagePerso.formatDate}" style="margin:10px 10px 10px 10px;">
+											    <h:outputText value="#{messagePerso.message}" />             
+											</rich:simpleTogglePanel>
+										</h:column>
+									</rich:dataTable>
+									<rich:spacer height="10" />
+									<rich:datascroller align="left" for="messagesPersosTable" maxPages="50"
+	            						id="messagesPersosTableScroller2" reRender="messagesPersosTableScroller1" 
+	            						page="#{membreControlleur.pageMessagesPersosTableScroller}"/>
+	            					<rich:spacer height="30" />
+								</a4j:form>
 							</h:panelGroup>
 						</rich:tab>
 						<rich:tab label="Recherche" id="tabMessagesPublicsRecherche">
@@ -372,11 +404,29 @@ body {
 									reRender="listeMessagesRecherche"/>
 							</a4j:form>
 							<h:panelGroup id="listeMessagesRecherche">
-								<a4j:repeat value="#{membreControlleur.messagesPublicsRecherche}" var="messagePublicRecherche">
-									<rich:simpleTogglePanel switchType="client" label="#{messagePublicRecherche.emetteur.pseudo} - #{messagePublicRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
-									    <h:outputText value="#{messagePublicRecherche.message}" />             
-									</rich:simpleTogglePanel>
-								</a4j:repeat>
+								<a4j:form>
+									<rich:spacer height="30" />
+									<rich:datascroller align="left" for="messagesPublicsRechercheTable" maxPages="50"
+	            						id="messagesPublicsRechercheTableScroller1" reRender="messagesPublicsRechercheTableScroller2"
+	            						page="#{membreControlleur.pageMessagesPublicsRechercheTableScroller}"
+	            						renderIfSinglePage="false" />
+	            					<rich:spacer height="10" />
+									<rich:dataTable value="#{membreControlleur.messagesPublicsRecherche}" 
+									var="messagePublicRecherche" width="100%" border="0" 
+									rows="10" id="messagesPublicsRechercheTable">
+										<h:column>
+											<rich:simpleTogglePanel switchType="client" label="#{messagePublicRecherche.emetteur.pseudo} - #{messagePublicRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
+											    <h:outputText value="#{messagePublicRecherche.message}" />             
+											</rich:simpleTogglePanel>
+										</h:column>
+									</rich:dataTable>
+									<rich:spacer height="10" />
+									<rich:datascroller align="left" for="messagesPublicsRechercheTable" maxPages="50"
+	            						id="messagesPublicsRechercheTableScroller2" reRender="messagesPublicsRechercheTableScroller1" 
+	            						page="#{membreControlleur.pageMessagesPublicsRechercheTableScroller}"
+	            						renderIfSinglePage="false" />
+	            					<rich:spacer height="30" />
+								</a4j:form>
 							</h:panelGroup>
 						</rich:tab>
 					</rich:tabPanel>
@@ -560,40 +610,90 @@ body {
 				<rich:tabPanel switchType="client" id="tabPanelMessagesPrives">
 					<rich:tab label="Recus" id="tabMessagesPrivesRecus">
 						<h:panelGroup id="listeMessagesPrivesRecus">
-							<a4j:repeat value="#{membreControlleur.messagesPrivesRecus}" var="messagePriveRecu">
-								<rich:simpleTogglePanel switchType="client" label="#{messagePriveRecu.emetteur.pseudo} - #{messagePriveRecu.formatDate}" style="margin:10px 10px 10px 10px;">
-								    <h:outputText value="#{messagePriveRecu.message}" />             
-								</rich:simpleTogglePanel>
-							</a4j:repeat>
+							<a4j:form>
+								<rich:spacer height="30" />
+								<rich:datascroller align="left" for="messagesPrivesRecusTable" maxPages="50"
+            						id="messagesPrivesRecusTableScroller1" reRender="messagesPrivesRecusTableScroller2"
+            						page="#{membreControlleur.pageMessagesPrivesRecusTableScroller}" />
+            					<rich:spacer height="10" />
+								<rich:dataTable value="#{membreControlleur.messagesPrivesRecus}" 
+								var="messagePrivesRecu" width="100%" border="0" 
+								rows="10" id="messagesPrivesRecusTable">
+									<h:column>
+										<rich:simpleTogglePanel switchType="client" label="#{messagePrivesRecu.emetteur.pseudo} - #{messagePrivesRecu.formatDate}" style="margin:10px 10px 10px 10px;">
+										    <h:outputText value="#{messagePrivesRecu.message}" />             
+										</rich:simpleTogglePanel>
+									</h:column>
+								</rich:dataTable>
+								<rich:spacer height="10" />
+								<rich:datascroller align="left" for="messagesPrivesRecusTable" maxPages="50"
+            						id="messagesPrivesRecusTableScroller2" reRender="messagesPrivesRecusTableScroller1" 
+            						page="#{membreControlleur.pageMessagesPrivesRecusTableScroller}" />
+            					<rich:spacer height="30" />
+							</a4j:form>
 						</h:panelGroup>
 					</rich:tab>
 					<rich:tab label="Emis" id="tabMessagesPrivesEmis">
 						<h:panelGroup id="listeMessagesPrivesEmis">
-							<a4j:repeat value="#{membreControlleur.messagesPrivesEmis}" var="messagePriveEmis">
-								<rich:simpleTogglePanel switchType="client" label="#{messagePriveEmis.destinataire.pseudo} - #{messagePriveEmis.formatDate}" style="margin:10px 10px 10px 10px;">
-								    <h:outputText value="#{messagePriveEmis.message}" />             
-								</rich:simpleTogglePanel>
-							</a4j:repeat>
+							<a4j:form>
+								<rich:spacer height="30" />
+								<rich:datascroller align="left" for="messagesPrivesEmisTable" maxPages="50"
+            						id="messagesPrivesEmisTableScroller1" reRender="messagesPrivesEmisTableScroller2"
+            						page="#{membreControlleur.pageMessagesPrivesEmisTableScroller}" />
+            					<rich:spacer height="10" />
+								<rich:dataTable value="#{membreControlleur.messagesPrivesEmis}" 
+								var="messagePrivesEmi" width="100%" border="0" 
+								rows="10" id="messagesPrivesEmisTable">
+									<h:column>
+										<rich:simpleTogglePanel switchType="client" label="#{messagePrivesEmi.emetteur.pseudo} - #{messagePrivesEmi.formatDate}" style="margin:10px 10px 10px 10px;">
+										    <h:outputText value="#{messagePrivesEmi.message}" />             
+										</rich:simpleTogglePanel>
+									</h:column>
+								</rich:dataTable>
+								<rich:spacer height="10" />
+								<rich:datascroller align="left" for="messagesPrivesEmisTable" maxPages="50"
+            						id="messagesPrivesEmisTableScroller2" reRender="messagesPrivesEmisTableScroller1" 
+            						page="#{membreControlleur.pageMessagesPrivesEmisTableScroller}" />
+            					<rich:spacer height="30" />
+							</a4j:form>
 						</h:panelGroup>
 					</rich:tab>
 					<rich:tab label="Recherche" id="tabMessagesPrivesRecherche">
-							<rich:spacer height="15px" width="100%"/>
-							<a4j:form id="recherche_prive_form" style="text-align:center;">
-								<h:outputLabel for="recherche_prive_text_area" value="Saisissez un ou plusieurs mots clés : " style="margin:7px;" />
-								<h:inputText id="recherche_prive_text_area" style=" width : 20%;margin:7px;"
-									value="#{membreControlleur.motsClesRecherche}"/>
-								<a4j:commandButton id="recherche_prive_bouton_envoyer" value="Envoyer" style="margin:5px;"
-									action="#{membreControlleur.rechercherMessagesPrives}"
-									reRender="listeMessagesPrivesRecherche"/>
+						<rich:spacer height="15px" width="100%"/>
+						<a4j:form id="recherche_prive_form" style="text-align:center;">
+							<h:outputLabel for="recherche_prive_text_area" value="Saisissez un ou plusieurs mots clés : " style="margin:7px;" />
+							<h:inputText id="recherche_prive_text_area" style=" width : 20%;margin:7px;"
+								value="#{membreControlleur.motsClesRecherche}"/>
+							<a4j:commandButton id="recherche_prive_bouton_envoyer" value="Envoyer" style="margin:5px;"
+								action="#{membreControlleur.rechercherMessagesPrives}"
+								reRender="listeMessagesPrivesRecherche"/>
+						</a4j:form>
+						<h:panelGroup id="listeMessagesPrivesRecherche">
+							<a4j:form>
+								<rich:spacer height="30" />
+								<rich:datascroller align="left" for="messagesPrivesRechercheTable" maxPages="50"
+            						id="messagesPrivesRechercheTableScroller1" reRender="messagesPrivesRechercheTableScroller2"
+            						page="#{membreControlleur.pageMessagesPrivesRechercheTableScroller}" 
+            						renderIfSinglePage="false" />
+            					<rich:spacer height="10" />
+								<rich:dataTable value="#{membreControlleur.messagesPrivesRecherche}" 
+								var="messagePrivesRecherche" width="100%" border="0" 
+								rows="10" id="messagesPrivesRechercheTable">
+									<h:column>
+										<rich:simpleTogglePanel switchType="client" label="#{messagePrivesRecherche.emetteur.pseudo} - #{messagePrivesRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
+										    <h:outputText value="#{messagePrivesRecherche.message}" />             
+										</rich:simpleTogglePanel>
+									</h:column>
+								</rich:dataTable>
+								<rich:spacer height="10" />
+								<rich:datascroller align="left" for="messagesPrivesRechercheTable" maxPages="50"
+            						id="messagesPrivesRechercheTableScroller2" reRender="messagesPrivesRechercheTableScroller1" 
+            						page="#{membreControlleur.pageMessagesPrivesRechercheTableScroller}" 
+            						renderIfSinglePage="false" />
+            					<rich:spacer height="30" />
 							</a4j:form>
-							<h:panelGroup id="listeMessagesPrivesRecherche">
-								<a4j:repeat value="#{membreControlleur.messagesPrivesRecherche}" var="messagePriveRecherche">
-									<rich:simpleTogglePanel switchType="client" label="#{messagePriveRecherche.emetteur.pseudo} - #{messagePriveRecherche.formatDate}" style="margin:10px 10px 10px 10px;">
-									    <h:outputText value="#{messagePriveRecherche.message}" />             
-									</rich:simpleTogglePanel>
-								</a4j:repeat>
-							</h:panelGroup>
-						</rich:tab>
+						</h:panelGroup>
+					</rich:tab>
 				</rich:tabPanel>
 				<rich:spacer height="15px" width="100%"/>
 	        </rich:tab>

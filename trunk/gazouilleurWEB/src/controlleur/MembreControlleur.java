@@ -61,6 +61,13 @@ public class MembreControlleur extends HttpServlet{
 	private Collection<String> motsClesRecherche = new ArrayList<String>();
 	private Collection<MessagePublic> messagesPublicsRecherche = new ArrayList<MessagePublic>();
 	private Collection<MessagePrive> messagesPrivesRecherche = new ArrayList<MessagePrive>();
+	
+	private int pageMessagesPublicsTableScroller = 1;
+	private int pageMessagesPersosTableScroller = 1;
+	private int pageMessagesPublicsRechercheTableScroller = 1;
+	private int pageMessagesPrivesEmisTableScroller = 1;
+	private int pageMessagesPrivesRecusTableScroller = 1;
+	private int pageMessagesPrivesRechercheTableScroller = 1;
 
 	public String creerMembre() {
 		closePanelInscription = false;
@@ -77,6 +84,12 @@ public class MembreControlleur extends HttpServlet{
 			ongletHomeActif = true;
 			ongletMessageActif = false;
 			ongletSuiveurActif = false;
+			pageMessagesPublicsTableScroller = 1;
+			setPageMessagesPersosTableScroller(1);
+			pageMessagesPublicsRechercheTableScroller = 1;
+			pageMessagesPrivesEmisTableScroller = 1;
+			pageMessagesPrivesRecusTableScroller = 1;
+			pageMessagesPrivesRechercheTableScroller = 1;
 			listerMembres();
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -129,6 +142,12 @@ public class MembreControlleur extends HttpServlet{
 		ongletHomeActif = true;
 		ongletMessageActif = false;
 		ongletSuiveurActif = false;
+		pageMessagesPublicsTableScroller = 1;
+		setPageMessagesPersosTableScroller(1);
+		pageMessagesPublicsRechercheTableScroller = 1;
+		pageMessagesPrivesEmisTableScroller = 1;
+		pageMessagesPrivesRecusTableScroller = 1;
+		pageMessagesPrivesRechercheTableScroller = 1;
 		recupererMessagesPublics();
 		recupererMessagesPerso();
 		recupererMessagesPrivesEmis();
@@ -213,7 +232,6 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String recupererMessagesPublics() {
 		messagesPublics = messagePublicFacade.getMessagesPublicsFor(membre);
-		System.out.println("Recupere message public");
 		return null;
 	}
 	
@@ -455,11 +473,13 @@ public class MembreControlleur extends HttpServlet{
 
 	public String rechercherMessagesPublics() {
 		setMessagesPublicsRecherche(messagePublicFacade.rechercheMessagesPublics(motsClesRecherche));
+		setPageMessagesPublicsRechercheTableScroller(1);
 		return null;
 	}
 	
 	public String rechercherMessagesPrives() {
 		setMessagesPrivesRecherche(messagePriveFacade.rechercheMessagesPrives(motsClesRecherche, membre));
+		setPageMessagesPrivesRechercheTableScroller(1);
 		return null;
 	}
 
@@ -509,6 +529,60 @@ public class MembreControlleur extends HttpServlet{
 
 	public boolean isOngletMessageActif() {
 		return ongletMessageActif;
+	}
+
+	public void setPageMessagesPublicsTableScroller(
+			int pageMessagesPublicsTableScroller) {
+		this.pageMessagesPublicsTableScroller = pageMessagesPublicsTableScroller;
+	}
+
+	public int getPageMessagesPublicsTableScroller() {
+		return pageMessagesPublicsTableScroller;
+	}
+
+	public void setPageMessagesPersosTableScroller(
+			int pageMessagesPersosTableScroller) {
+		this.pageMessagesPersosTableScroller = pageMessagesPersosTableScroller;
+	}
+
+	public int getPageMessagesPersosTableScroller() {
+		return pageMessagesPersosTableScroller;
+	}
+
+	public int getPageMessagesPublicsRechercheTableScroller() {
+		return pageMessagesPublicsRechercheTableScroller;
+	}
+
+	public void setPageMessagesPublicsRechercheTableScroller(
+			int pageMessagesPublicsRechercheTableScroller) {
+		this.pageMessagesPublicsRechercheTableScroller = pageMessagesPublicsRechercheTableScroller;
+	}
+
+	public int getPageMessagesPrivesEmisTableScroller() {
+		return pageMessagesPrivesEmisTableScroller;
+	}
+
+	public void setPageMessagesPrivesEmisTableScroller(
+			int pageMessagesPrivesEmisTableScroller) {
+		this.pageMessagesPrivesEmisTableScroller = pageMessagesPrivesEmisTableScroller;
+	}
+
+	public int getPageMessagesPrivesRecusTableScroller() {
+		return pageMessagesPrivesRecusTableScroller;
+	}
+
+	public void setPageMessagesPrivesRecusTableScroller(
+			int pageMessagesPrivesRecusTableScroller) {
+		this.pageMessagesPrivesRecusTableScroller = pageMessagesPrivesRecusTableScroller;
+	}
+
+	public int getPageMessagesPrivesRechercheTableScroller() {
+		return pageMessagesPrivesRechercheTableScroller;
+	}
+
+	public void setPageMessagesPrivesRechercheTableScroller(
+			int pageMessagesPrivesRechercheTableScroller) {
+		this.pageMessagesPrivesRechercheTableScroller = pageMessagesPrivesRechercheTableScroller;
 	}
 
 }
