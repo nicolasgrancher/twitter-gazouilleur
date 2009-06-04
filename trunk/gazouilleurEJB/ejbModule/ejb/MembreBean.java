@@ -191,7 +191,7 @@ public class MembreBean implements MembreFacade {
 	 */
 	public Collection <Membre> getSuiveur(Membre membre) {
 		membre = getEntityMgr().merge(membre);
-		Collection<Membre> collection = membre.getListSuivis();
+		Collection<Membre> collection = membre.getListSuiveurs();
 		collection.size(); // chargement de la collection persistée
 		Collections.sort((List<Membre>) collection);
 		return collection;

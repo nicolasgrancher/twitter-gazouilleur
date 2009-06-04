@@ -141,6 +141,8 @@ public class MembreControlleur extends HttpServlet{
 		try {
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.ajouterAmi(membre, ami);
+			membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
+			membre.setListSuivis((List<Membre>)membreFacade.getSuivi(membre));
 			recupererMessagesPublics();
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("ajoutSuiviForm", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -152,6 +154,8 @@ public class MembreControlleur extends HttpServlet{
 		try {
 			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
 			membre = membreFacade.supprimerAmi(membre, ami);
+			membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
+			membre.setListSuivis((List<Membre>)membreFacade.getSuivi(membre));
 			recupererMessagesPublics();
 		} catch (MembreException e) {
 			// TODO Auto-generated catch block
@@ -255,10 +259,18 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String listerSuiveurs() {
 		membre = membreFacade.rafraichirMembre(membre);
+		membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
 		System.out.println("Lister suiveur");
 		return null;
 	}
-
+	
+	/*public String listerSuivis() {
+		membre = membreFacade.rafraichirMembre(membre);
+		membre.setListSuivis((List<Membre>)membreFacade.getSuivi(membre));
+		System.out.println("Lister suivi");
+		return null;
+	}*/
+	
 	public Membre getMembre() {
 		return membre;
 	}

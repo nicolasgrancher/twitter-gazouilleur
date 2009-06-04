@@ -52,12 +52,12 @@ public class Membre implements Serializable, Comparable<Membre> {
 	@OneToMany(mappedBy="emetteur", cascade = {CascadeType.REMOVE})
 	private List<MessagePrive> messagesPrivesEmis;
 	
-	@ManyToMany(cascade = {CascadeType.REMOVE}, fetch=FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.REMOVE})
 	@JoinTable(name = "suivis", joinColumns = @JoinColumn(name = "suiveur_num", referencedColumnName = "id"), 
 									   inverseJoinColumns = @JoinColumn(name = "suivi_num", referencedColumnName = "id"))
     private List<Membre> listSuivis; // les amis que le membre suit
 	
-	@ManyToMany(cascade = {CascadeType.REMOVE}, mappedBy="listSuivis", fetch=FetchType.EAGER)
+	@ManyToMany(cascade = {CascadeType.REMOVE}, mappedBy="listSuivis")
 //	@JoinTable(name = "suivis", joinColumns = @JoinColumn(name = "suivi_num", referencedColumnName = "id"), 
 //										inverseJoinColumns = @JoinColumn(name = "suiveur_num", referencedColumnName = "id"))
 	private List<Membre> listSuiveurs; // les amis qui suivent le membre
