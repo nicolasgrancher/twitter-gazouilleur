@@ -41,12 +41,15 @@ public class MembreControlleur extends HttpServlet{
 	private String messagePublic;
 	private String messagePrive;
 	private String ajoutSuivi;
+	private String supprSuivi;
 	private String destinataireMessagePrive;
 	
 	private boolean closePanelInscription = false;
 	private boolean closePanelConnexion = false;
 	private boolean closePanelModifInfo = false;
+	
 	private boolean suivisPollEnabled = true;
+	private boolean destinatairesPollEnabled = true;
 	
 	private boolean ongletHomeActif = false;
 	private boolean ongletSuiveurActif = false;
@@ -90,6 +93,8 @@ public class MembreControlleur extends HttpServlet{
 			pageMessagesPrivesEmisTableScroller = 1;
 			pageMessagesPrivesRecusTableScroller = 1;
 			pageMessagesPrivesRechercheTableScroller = 1;
+			suivisPollEnabled = true;
+			destinatairesPollEnabled = true;
 			listerMembres();
 		} catch (MembreException e) {
 			FacesContext.getCurrentInstance().addMessage("formInscription", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -124,6 +129,7 @@ public class MembreControlleur extends HttpServlet{
 		membre = new Membre();
 		estConnecte = false;
 		suivisPollEnabled = false;
+		destinatairesPollEnabled = false;
 		initVar();
 		return "deconnexion";
 	}
@@ -138,6 +144,7 @@ public class MembreControlleur extends HttpServlet{
 		}
 		estConnecte = true;
 		suivisPollEnabled = true;
+		destinatairesPollEnabled = true;
 		closePanelConnexion = true;
 		ongletHomeActif = true;
 		ongletMessageActif = false;
@@ -171,7 +178,7 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String supprimerAmi() {
 		try {
-			Membre ami = membreFacade.getByPseudo(ajoutSuivi);
+			Membre ami = membreFacade.getByPseudo(supprSuivi);
 			membre = membreFacade.supprimerAmi(membre, ami);
 			membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
 			membre.setListSuivis((List<Membre>)membreFacade.getSuivi(membre));
@@ -247,7 +254,6 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String recupererMessagesPrivesRecus() {
 		messagesPrivesRecus = messagePriveFacade.getMessagesPrivesRecus(membre);
-		System.out.println("Recupere message prive");
 		return null;
 	}
 	
@@ -255,6 +261,7 @@ public class MembreControlleur extends HttpServlet{
 		password2 = "";
 		messagePublic = "";
 		ajoutSuivi = "";
+		supprSuivi = "";
 		listeMembres = null;
 		messagesPublics = null;
 		messagesPerso = null;
@@ -271,14 +278,13 @@ public class MembreControlleur extends HttpServlet{
 	
 	public String listerMembres() {
 		listeMembres = membreFacade.rechercheTous(membre);
-		System.out.println("Lister membre");
 		return null;
 	}
 	
 	public String listerSuiveurs() {
 		membre = membreFacade.rafraichirMembre(membre);
 		membre.setListSuiveurs((List<Membre>)membreFacade.getSuiveur(membre));
-		System.out.println("Lister suiveur");
+		membre.getListSuiveurs();
 		return null;
 	}
 	
@@ -583,6 +589,30 @@ public class MembreControlleur extends HttpServlet{
 	public void setPageMessagesPrivesRechercheTableScroller(
 			int pageMessagesPrivesRechercheTableScroller) {
 		this.pageMessagesPrivesRechercheTableScroller = pageMessagesPrivesRechercheTableScroller;
+	}
+
+	public void setSupprSuivi(String supprSuivi) {
+		this.supprSuivi = supprSuivi;
+	}
+
+	public String getSupprSuivi() {
+		return supprSuivi;
+	}
+
+	public void setDestinatairesPollEnabled(boolean destinatairesPollEnabled) {
+		this.destinatairesPollEnabled = destinatairesPollEnabled;
+	}
+
+	public boolean isDestinatairesPollEnabled() {
+		return destinatairesPollEnabled;
+	}
+	
+	public void setDestinatairesPollEnabledToTrue() {
+		this.destinatairesPollEnabled = true;
+	}
+	
+	public void setDestinatairesPollEnabledToFalse() {
+		this.destinatairesPollEnabled = false;
 	}
 
 }
