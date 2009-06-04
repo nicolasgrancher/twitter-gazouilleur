@@ -78,6 +78,8 @@ public class MessagePriveBean implements MessagePriveFacade {
 			}
 			Query q = entityMgr.createQuery(expressionRecherche);
 			Collection<MessagePrive> messages = q.getResultList();
+			Collections.sort((List<MessagePrive>) messages);
+			Collections.reverse((List<MessagePrive>)messages);
 			return messages;
 		} catch(NoResultException e) {
 			return null;

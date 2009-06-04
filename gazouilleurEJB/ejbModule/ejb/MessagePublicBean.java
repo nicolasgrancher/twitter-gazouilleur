@@ -128,6 +128,8 @@ public class MessagePublicBean implements MessagePublicFacade {
 			}
 			Query q = entityMgr.createQuery(expressionRecherche);
 			Collection<MessagePublic> messages = q.getResultList();
+			Collections.sort((List<MessagePublic>)messages);
+			Collections.reverse((List<MessagePublic>)messages);
 			return messages;
 		} catch(NoResultException e) {
 			return null;
