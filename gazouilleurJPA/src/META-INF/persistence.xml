@@ -5,8 +5,8 @@
 		<jta-data-source>java:/gazouilleur</jta-data-source>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-			<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
+			<!-- <property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 			<property name="hibernate.archive.autodetection" value="class, hbm" />
 		</properties>
 	</persistence-unit>
