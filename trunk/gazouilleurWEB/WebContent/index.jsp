@@ -302,15 +302,17 @@ body {
 		        			Gazouilleur est un service pour les amis, la famille, et les collègues pour communiquer et rester connecter 
 		        			grâce à des échanges de réponses rapides et fréquentes à une seule question simple : <strong>Que fais-tu ?</strong>
 		        		</p>
-		        		<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription2">
-						     <rich:componentControl for="panel_inscription" attachTo="lienInscription2" operation="show" event="onclick"/>
-						</a4j:commandLink>
+		        		<a4j:form id="join_big">
+			        		<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription2">
+							     <rich:componentControl for="panel_inscription" attachTo="lienInscription2" operation="show" event="onclick"/>
+							</a4j:commandLink>
+						</a4j:form>
 		        	</div>
 	        	</h:panelGroup>
 	        	
 	        	<h:panelGroup rendered="#{membreControlleur.estConnecte == true}">
 					<a4j:form id="message_form" style="text-align:center;">
-						<rich:messages layout="list" showSummary="true" style="color:Red;">
+						<rich:messages layout="list" showSummary="true" style="color:Red;" for="message_form">
 							<f:facet name="errorMarker">
 								<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
 							</f:facet>
@@ -395,7 +397,7 @@ body {
 		
 			<!-- Debut ajout d'un suivi -->
 				<a4j:form id="ajoutSuiviForm">
-					<rich:messages layout="list" showSummary="true" style="color:Red;">
+					<rich:messages layout="list" showSummary="true" style="color:Red;" for="ajoutSuiviForm">
 						<f:facet name="errorMarker">
 							<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
 						</f:facet>
@@ -506,7 +508,7 @@ body {
 				<a4j:support event="ontableave" action="#{membreControlleur.setOngletMessageActifToFalse}" reRender="pollMessagesPrivesRecus"/>
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="messagesPrivesForm" style="text-align:center;">
-					<rich:messages layout="list" showSummary="true" style="color:Red;">
+					<rich:messages layout="list" showSummary="true" style="color:Red;" for="messagesPrivesForm">
 						<f:facet name="errorMarker">
 							<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;"/>   
 						</f:facet>

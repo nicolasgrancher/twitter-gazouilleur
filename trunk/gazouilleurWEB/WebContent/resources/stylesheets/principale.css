@@ -38,7 +38,7 @@
 	border-color: silver;
 }
 
-#lienInscription2 {
+#join_big a {
 	font-size: 16px;
 	color: white;
 	font-weight: bold;
@@ -52,7 +52,7 @@
 	padding-bottom: 5px;
 	margin-top: 15px;
 }
-#lienInscription2:hover {
+#join_big a:hover {
 	text-decoration: none;
 }
 
