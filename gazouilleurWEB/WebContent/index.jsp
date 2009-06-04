@@ -100,9 +100,11 @@ body {
 		
 		<!-- Debut lien d'inscription affichant la popup d'inscription-->
 		<h:panelGroup id="panelGroupInscription">
-			<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
-			     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
-			</a4j:commandLink>
+			<a4j:form>
+				<a4j:commandLink value="Rejoindre Gazouilleur!" id="lienInscription" rendered="#{membreControlleur.estConnecte ==  false}">
+				     <rich:componentControl for="panel_inscription" attachTo="lienInscription" operation="show" event="onclick"/>
+				</a4j:commandLink>
+			</a4j:form>
 		<!-- Fin lien d'inscription -->
 		
 		<!-- Debut lien de modification du compte affichant la popup associee-->
@@ -128,7 +130,7 @@ body {
 	        <a4j:form id="formConnexion">
 	        	<rich:messages layout="list" showSummary="true" style="color:Red;">
 					<f:facet name="errorMarker">
-						<h:graphicImage value="/resources/images/error.gif" />   
+						<h:graphicImage value="/resources/images/error.gif" style="padding-right:7px;" />   
 					</f:facet>
 		 		</rich:messages>        		
 		        <h:panelGrid columns="2">
