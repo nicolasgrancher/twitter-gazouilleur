@@ -93,7 +93,7 @@ body {
 		    <a4j:form>
 				<a4j:commandLink value="Se déconnecter" id="lienDeconnexion" 
 					rendered="#{membreControlleur.estConnecte}" action="#{membreControlleur.deconnexion}"
-					reRender="panelGroupConnexion,panelGroupInscription,tabPanel,variables"/>
+					reRender="panelGroupConnexion,panelGroupInscription,tabPanel,panel_inscription,panel_connexion"/>
 			</a4j:form>
 		<!-- Fin lien de deconnexion -->
 		</h:panelGroup>
@@ -149,7 +149,7 @@ body {
 							<a4j:commandButton value="Ok" id="formConnexionBouton"
 								action="#{membreControlleur.connexion}" 
 								oncomplete="if ('#{membreControlleur.closePanelConnexion}' == 'true') { Richfaces.hideModalPanel('panel_connexion'); }"
-								reRender="panelGroupConnexion,panelGroupInscription,tabPanel,variables">
+								reRender="panelGroupConnexion,panelGroupInscription,tabPanel,panelModifCompte">
 							</a4j:commandButton>
 						</h:panelGroup>
 					</f:facet>
@@ -209,7 +209,7 @@ body {
 		  				<!-- Modifier la valeur onclick pour ajouter le script de connexion -->
 							<a4j:commandButton value="Ok" action="#{membreControlleur.creerMembre}" id="formInscriptionButton" 
 								oncomplete="if('#{membreControlleur.closePanelInscription}' == 'true'){javascript:Richfaces.hideModalPanel('panel_inscription');}"
-								reRender="panelGroupConnexion,panelGroupInscription,tabPanel,variables"/>
+								reRender="panelGroupConnexion,panelGroupInscription,tabPanel,panelModifCompte"/>
 						</h:panelGroup>
 					</f:facet>
 		 		</h:panelGrid>
