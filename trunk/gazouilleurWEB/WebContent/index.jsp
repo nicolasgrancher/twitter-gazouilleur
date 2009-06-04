@@ -108,9 +108,11 @@ body {
 		<!-- Fin lien d'inscription -->
 		
 		<!-- Debut lien de modification du compte affichant la popup associee-->
-			<a4j:commandLink value="Modifier ses infos" id="lienModifCompte" rendered="#{membreControlleur.estConnecte ==  true}">
-			     <rich:componentControl for="panelModifCompte" attachTo="lienModifCompte" operation="show" event="onclick"/>
-			</a4j:commandLink>
+			<a4j:form>
+				<a4j:commandLink value="Modifier ses infos" id="lienModifCompte" rendered="#{membreControlleur.estConnecte ==  true}">
+				     <rich:componentControl for="panelModifCompte" attachTo="lienModifCompte" operation="show" event="onclick"/>
+				</a4j:commandLink>
+			</a4j:form>
 		</h:panelGroup>
 		<!-- Fin lien de modification du compte -->
 	
