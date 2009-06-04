@@ -456,8 +456,8 @@ body {
 				    <rich:comboBox id="ajoutSuivi" value="#{membreControlleur.ajoutSuivi}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" >
-				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}" reRender="pollSuivis"/>
-				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}" reRender="pollSuivis"/>
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}" reRender="pollSuivis,pollSuiveurs"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}" reRender="pollSuivis,pollSuiveurs"/>
 				    </rich:comboBox> 
 				    <rich:spacer height="15px" width="100%"/>
 				   	<a4j:commandButton action="#{membreControlleur.ajouterAmi}" value="Suivre" 
@@ -471,7 +471,7 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollSuivis" interval="5000" limitToList="true"
-			            	enabled="#{membreControlleur.ongletSuiveurActif}"
+			            	enabled="#{membreControlleur.ongletSuiveurActif && membreControlleur.suivisPollEnabled}"
 			            	action="#{membreControlleur.listerMembres}"
 			                reRender="pollSuivis,ajoutSuivi" />
 			        </h:form>
@@ -486,7 +486,7 @@ body {
 					<rich:contextMenu attached="false" id="suivisMenu" submitMode="ajax">
 						<rich:menuItem>
 							Ne plus suivre {pseudo}
-							<a4j:actionparam assignTo="#{membreControlleur.ajoutSuivi}" value="{pseudo}" />
+							<a4j:actionparam assignTo="#{membreControlleur.supprSuivi}" value="{pseudo}" />
 							<a4j:support action="#{membreControlleur.supprimerAmi}" event="oncomplete"
 								reRender="suivisTable" requestDelay="500"/>
 						</rich:menuItem>
@@ -537,7 +537,7 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollSuiveurs" interval="5000" limitToList="true"
-			            	enabled="#{membreControlleur.ongletSuiveurActif}"
+			            	enabled="#{membreControlleur.ongletSuiveurActif && membreControlleur.suivisPollEnabled}"
 			            	action="#{membreControlleur.listerSuiveurs}"
 			                reRender="pollSuiveurs,suiveursTable" />
 			        </h:form>
@@ -554,8 +554,8 @@ body {
 	        
 	        <!-- Debut onglet messages prives -->
 	        <rich:tab label="Messages" id="tabMessages" disabled="#{membreControlleur.estConnecte ==  false}">
-	        	<a4j:support event="ontabenter" action="#{membreControlleur.setOngletMessageActifToTrue}" reRender="pollMessagesPrivesRecus"/>
-				<a4j:support event="ontableave" action="#{membreControlleur.setOngletMessageActifToFalse}" reRender="pollMessagesPrivesRecus"/>
+	        	<a4j:support event="ontabenter" action="#{membreControlleur.setOngletMessageActifToTrue}" reRender="pollMessagesPrivesRecus,pollComboBoxMessage"/>
+				<a4j:support event="ontableave" action="#{membreControlleur.setOngletMessageActifToFalse}" reRender="pollMessagesPrivesRecus,pollComboBoxMessage"/>
 	        	<rich:spacer height="15px" width="100%"/>
 				<a4j:form id="messagesPrivesForm" style="text-align:center;">
 					<rich:messages layout="list" showSummary="true" style="color:Red;" for="messagesPrivesForm">
@@ -574,8 +574,8 @@ body {
 				    <rich:comboBox id="destinataireMessagePrive" value="#{membreControlleur.destinataireMessagePrive}"
 				    	suggestionValues="#{membreControlleur.listeMembres}"
 				    	directInputSuggestions="true" style="margin: auto;">
-				    	<a4j:support event="onfocus" action="#{membreControlleur.setSuivisPollEnabledToFalse}" reRender="pollSuivis"/>
-				    	<a4j:support event="onblur" action="#{membreControlleur.setSuivisPollEnabledToTrue}" reRender="pollSuivis"/>
+				    	<a4j:support event="onfocus" action="#{membreControlleur.setDestinatairesPollEnabledToFalse}" reRender="pollComboBoxMessage"/>
+				    	<a4j:support event="onblur" action="#{membreControlleur.setDestinatairesPollEnabledToTrue}" reRender="pollComboBoxMessage"/>
 				    </rich:comboBox> 
 				    <rich:spacer height="15px" width="100%"/>
 					<a4j:commandButton id="messagesPrivesBoutonEnvoyer" value="Envoyer" style="margin:5px;"
@@ -590,7 +590,7 @@ body {
 				<a4j:region>
 			        <h:form>
 			            <a4j:poll id="pollComboBoxMessage" interval="5000" limitToList="true"
-			            	enabled="#{membreControlleur.ongletMessageActif}"
+			            	enabled="#{membreControlleur.ongletMessageActif && membreControlleur.destinatairesPollEnabled}"
 			            	action="#{membreControlleur.listerMembres}"
 			                reRender="pollComboBoxMessage,destinataireMessagePrive" />
 			        </h:form>
